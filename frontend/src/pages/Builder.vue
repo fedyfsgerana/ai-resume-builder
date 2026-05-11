@@ -10,7 +10,7 @@
                     <h1 class="text-xl font-bold text-secondary-900">{{ currentResume?.title || 'Resume Builder' }}</h1>
                     <div class="flex items-center gap-2 mt-0.5">
                         <span :class="statusBadge(currentResume?.status)">{{ statusLabel(currentResume?.status)
-                        }}</span>
+                            }}</span>
                         <span v-if="currentResume?.matchScore"
                             class="flex items-center gap-1 text-xs text-secondary-500">
                             <BarChart2 class="w-3 h-3" />
@@ -323,7 +323,7 @@
                         <p class="mb-2 text-xs font-medium text-secondary-600">Kata Kunci yang Kurang</p>
                         <div class="flex flex-wrap gap-1.5">
                             <span v-for="kw in matchResult.missingKeywords" :key="kw" class="badge badge-danger">{{ kw
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
                     <div v-if="matchResult.suggestions?.length">
@@ -371,12 +371,12 @@
                             </p>
                             <div v-for="exp in previewData.experience" :key="exp.company" class="mb-2">
                                 <p class="text-xs font-semibold text-secondary-800">{{ exp.position }} — {{ exp.company
-                                }}</p>
+                                    }}</p>
                                 <p class="text-xs text-secondary-500">{{ exp.startDate }} - {{ exp.isCurrent ?
                                     'Sekarang' : exp.endDate }}</p>
                                 <ul v-if="exp.description?.length" class="mt-1">
                                     <li v-for="d in exp.description" :key="d" class="text-xs text-secondary-600">- {{ d
-                                    }}</li>
+                                        }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -638,4 +638,10 @@ onMounted(async () => {
         error('Gagal memuat CV, coba lagi')
     }
 })
+
+const statusLabel = (status) => ({
+    DRAFT: 'Draft',
+    GENERATED: 'Digenerate',
+    EXPORTED: 'Diekspor'
+}[status] || status)
 </script>

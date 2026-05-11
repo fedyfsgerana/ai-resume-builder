@@ -1,3 +1,4 @@
+import { ResumeModel } from "../models/Resume.js";
 import {
   generateBulletPoints,
   generateSummary,
