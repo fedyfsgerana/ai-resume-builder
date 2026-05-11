@@ -3,83 +3,125 @@
         <!-- Hero Section -->
         <section class="py-20 text-center">
             <div class="max-w-3xl mx-auto">
-                <span class="badge badge-info mb-4">AI-Powered Resume Builder</span>
-                <h1 class="text-5xl font-bold text-secondary-900 leading-tight mb-6">
-                    Build a Resume That
-                    <span class="text-primary-600"> Gets You Hired</span>
+                <span class="mb-4 badge badge-info">AI Resume Builder</span>
+                <h1 class="mb-6 text-5xl font-bold leading-tight text-secondary-900">
+                    Buat CV yang
+                    <span class="text-primary-600"> Langsung Dilirik HRD</span>
                 </h1>
-                <p class="text-xl text-secondary-500 mb-10 leading-relaxed">
-                    Let AI tailor your resume to every job description automatically.
-                    Get a higher match score and land more interviews.
+                <p class="mb-10 text-xl leading-relaxed text-secondary-500">
+                    Biarkan AI menyesuaikan CV kamu dengan setiap lowongan secara otomatis.
+                    Dapatkan skor kecocokan lebih tinggi dan lebih banyak panggilan interview.
                 </p>
-                <div class="flex items-center justify-center gap-4">
-                    <RouterLink to="/auth/register" class="btn-primary px-8 py-3 text-base flex items-center gap-2">
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <RouterLink to="/auth/register" class="flex items-center gap-2 px-8 py-3 text-base btn-primary">
                         <Zap class="w-4 h-4" />
-                        Start for Free
+                        Mulai Gratis
                     </RouterLink>
-                    <RouterLink to="/auth/login" class="btn-outline px-8 py-3 text-base flex items-center gap-2">
+                    <RouterLink to="/auth/login" class="flex items-center gap-2 px-8 py-3 text-base btn-outline">
                         <LogIn class="w-4 h-4" />
-                        Login
+                        Masuk
                     </RouterLink>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-10">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div v-for="stat in stats" :key="stat.label" class="text-center card">
+                    <p class="mb-1 text-4xl font-bold text-primary-600">{{ stat.value }}</p>
+                    <p class="text-sm text-secondary-500">{{ stat.label }}</p>
                 </div>
             </div>
         </section>
 
         <!-- Features Section -->
         <section class="py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-secondary-900 mb-4">Why Use AI Resume Builder?</h2>
-                <p class="text-secondary-500 max-w-xl mx-auto">
-                    Stop spending hours manually editing your resume for each job application.
+            <div class="mb-12 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-secondary-900">Kenapa Pakai AI Resume Builder?</h2>
+                <p class="max-w-xl mx-auto text-secondary-500">
+                    Berhenti buang waktu berjam-jam mengedit CV secara manual untuk setiap lamaran.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div v-for="feature in features" :key="feature.title" class="card text-center">
-                    <div class="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center mx-auto mb-4">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div v-for="feature in features" :key="feature.title"
+                    class="text-center transition-shadow card group hover:shadow-modal">
+                    <div
+                        class="flex items-center justify-center w-12 h-12 mx-auto mb-4 transition-colors rounded-xl bg-primary-100 group-hover:bg-primary-200">
                         <component :is="feature.icon" class="w-6 h-6 text-primary-600" />
                     </div>
-                    <h3 class="text-lg font-semibold text-secondary-900 mb-2">{{ feature.title }}</h3>
-                    <p class="text-secondary-500 text-sm leading-relaxed">{{ feature.description }}</p>
+                    <h3 class="mb-2 text-lg font-semibold text-secondary-900">{{ feature.title }}</h3>
+                    <p class="text-sm leading-relaxed text-secondary-500">{{ feature.description }}</p>
                 </div>
             </div>
         </section>
 
         <!-- How It Works -->
-        <section class="py-16 bg-white rounded-2xl px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-secondary-900 mb-4">How It Works</h2>
-                <p class="text-secondary-500">Get your tailored resume in minutes</p>
+        <section class="px-8 py-16 bg-white rounded-2xl">
+            <div class="mb-12 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-secondary-900">Cara Kerjanya</h2>
+                <p class="text-secondary-500">Dapatkan CV yang disesuaikan dalam hitungan menit</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div v-for="(step, index) in steps" :key="step.title" class="text-center">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
+                <div v-for="(step, index) in steps" :key="step.title" class="relative text-center">
                     <div
-                        class="w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center mx-auto mb-4 font-bold">
+                        class="flex items-center justify-center w-10 h-10 mx-auto mb-4 text-sm font-bold text-white rounded-full bg-primary-600">
                         {{ index + 1 }}
                     </div>
                     <div class="flex justify-center mb-3">
-                        <component :is="step.icon" class="w-5 h-5 text-primary-500" />
+                        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-50">
+                            <component :is="step.icon" class="w-5 h-5 text-primary-500" />
+                        </div>
                     </div>
-                    <h3 class="font-semibold text-secondary-900 mb-2">{{ step.title }}</h3>
-                    <p class="text-secondary-500 text-sm">{{ step.description }}</p>
+                    <h3 class="mb-2 font-semibold text-secondary-900">{{ step.title }}</h3>
+                    <p class="text-sm text-secondary-500">{{ step.description }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial Section -->
+        <section class="py-16">
+            <div class="mb-12 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-secondary-900">Kata Mereka</h2>
+                <p class="text-secondary-500">Ribuan pencari kerja sudah merasakan manfaatnya</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div v-for="testimonial in testimonials" :key="testimonial.name"
+                    class="transition-shadow card hover:shadow-modal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="flex items-center justify-center w-10 h-10 text-sm font-bold rounded-full bg-primary-100 text-primary-700">
+                            {{ testimonial.name.charAt(0) }}
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-secondary-900">{{ testimonial.name }}</p>
+                            <p class="text-xs text-secondary-400">{{ testimonial.position }}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-0.5 mb-3">
+                        <Star v-for="i in 5" :key="i" class="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                    </div>
+                    <p class="text-sm leading-relaxed text-secondary-600">{{ testimonial.message }}</p>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="py-20 text-center">
+        <section class="px-8 py-20 text-center bg-primary-600 rounded-2xl">
             <div class="max-w-2xl mx-auto">
-                <h2 class="text-3xl font-bold text-secondary-900 mb-4">
-                    Ready to Land Your Dream Job?
+                <h2 class="mb-4 text-3xl font-bold text-white">
+                    Siap Dapatkan Pekerjaan Impianmu?
                 </h2>
-                <p class="text-secondary-500 mb-8">
-                    Join thousands of job seekers who already use AI Resume Builder.
+                <p class="mb-8 text-primary-100">
+                    Bergabung dengan ribuan pencari kerja yang sudah menggunakan AI Resume Builder.
                 </p>
                 <RouterLink to="/auth/register"
-                    class="btn-primary px-10 py-3 text-base flex items-center gap-2 justify-center inline-flex">
+                    class="inline-flex items-center gap-2 px-10 py-3 font-semibold transition-colors bg-white text-primary-600 rounded-xl hover:bg-primary-50">
                     <Rocket class="w-4 h-4" />
-                    Get Started for Free
+                    Mulai Gratis Sekarang
                 </RouterLink>
             </div>
         </section>
@@ -88,46 +130,73 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Bot, BarChart2, FileText, Zap, LogIn, Rocket, ClipboardList, Sparkles, Download, FilePen } from 'lucide-vue-next'
+import {
+    Bot, BarChart2, FileText, Zap, LogIn, Rocket,
+    ClipboardList, Sparkles, Download, FilePen, Star
+} from 'lucide-vue-next'
+
+const stats = [
+    { value: '10.000+', label: 'Pengguna Aktif' },
+    { value: '50.000+', label: 'CV Dibuat' },
+    { value: '85%', label: 'Tingkat Keberhasilan Interview' }
+]
 
 const features = [
     {
         icon: Bot,
-        title: 'AI-Powered Writing',
-        description: 'Our AI rewrites your bullet points and summary to match every job description automatically.'
+        title: 'Penulisan dengan AI',
+        description: 'AI kami menulis ulang bullet point dan ringkasan profesionalmu agar sesuai dengan setiap deskripsi pekerjaan secara otomatis.'
     },
     {
         icon: BarChart2,
-        title: 'Match Score',
-        description: 'See how well your resume matches the job description with a detailed score breakdown.'
+        title: 'Skor Kecocokan',
+        description: 'Lihat seberapa cocok CV kamu dengan lowongan yang dituju lengkap dengan breakdown skor per kategori.'
     },
     {
         icon: FileText,
-        title: 'ATS-Friendly Export',
-        description: 'Export your resume as a clean, ATS-friendly PDF that passes through applicant tracking systems.'
+        title: 'Ekspor Ramah ATS',
+        description: 'Ekspor CV sebagai PDF yang bersih dan ramah ATS sehingga lolos dari sistem pelacak pelamar.'
     }
 ]
 
 const steps = [
     {
         icon: FilePen,
-        title: 'Create Your CV Base',
-        description: 'Input your work experience, education, and skills once.'
+        title: 'Buat CV Dasar',
+        description: 'Isi pengalaman kerja, pendidikan, dan keahlian kamu sekali saja.'
     },
     {
         icon: ClipboardList,
-        title: 'Paste Job Description',
-        description: 'Copy and paste the job description you want to apply for.'
+        title: 'Tempel Deskripsi Kerja',
+        description: 'Salin dan tempel deskripsi pekerjaan yang ingin kamu lamar.'
     },
     {
         icon: Sparkles,
-        title: 'Generate with AI',
-        description: 'Our AI tailors your resume to match the job description.'
+        title: 'Generate dengan AI',
+        description: 'AI kami menyesuaikan CV kamu agar cocok dengan deskripsi pekerjaan.'
     },
     {
         icon: Download,
-        title: 'Export & Apply',
-        description: 'Download your tailored resume as PDF and apply with confidence.'
+        title: 'Ekspor dan Lamar',
+        description: 'Unduh CV yang sudah disesuaikan dalam format PDF dan lamar dengan percaya diri.'
+    }
+]
+
+const testimonials = [
+    {
+        name: 'Budi Santoso',
+        position: 'Software Engineer di Tokopedia',
+        message: 'Berkat AI Resume Builder, CV saya langsung disesuaikan dengan lowongan di Tokopedia. Seminggu kemudian saya dapat panggilan interview!'
+    },
+    {
+        name: 'Sari Dewi',
+        position: 'Product Manager di Gojek',
+        message: 'Saya tidak perlu lagi menghabiskan berjam-jam mengedit CV. Cukup paste deskripsi kerja dan AI langsung bekerja. Luar biasa!'
+    },
+    {
+        name: 'Andi Pratama',
+        position: 'Data Analyst di Shopee',
+        message: 'Fitur skor kecocokan sangat membantu. Saya bisa tahu seberapa relevan CV saya sebelum mengirim lamaran. Highly recommended!'
     }
 ]
 </script>

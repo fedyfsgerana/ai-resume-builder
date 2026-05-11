@@ -8,19 +8,19 @@
             </div>
 
             <h1 class="mb-4 text-6xl font-bold text-primary-600">404</h1>
-            <h2 class="mb-2 text-2xl font-semibold text-secondary-900">Page Not Found</h2>
+            <h2 class="mb-2 text-2xl font-semibold text-secondary-900">Halaman Tidak Ditemukan</h2>
             <p class="max-w-md mx-auto mb-8 text-secondary-500">
-                The page you are looking for does not exist or has been moved.
+                Halaman yang kamu cari tidak ada atau sudah dipindahkan.
             </p>
 
-            <div class="flex items-center justify-center gap-4">
+            <div class="flex flex-wrap items-center justify-center gap-4">
                 <RouterLink to="/" class="flex items-center gap-2 btn-primary">
                     <Home class="w-4 h-4" />
-                    Back to Home
+                    Kembali ke Beranda
                 </RouterLink>
                 <RouterLink to="/dashboard" class="flex items-center gap-2 btn-outline">
                     <LayoutDashboard class="w-4 h-4" />
-                    Dashboard
+                    Dasbor
                 </RouterLink>
             </div>
         </div>

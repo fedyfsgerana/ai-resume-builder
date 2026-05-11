@@ -10,7 +10,7 @@
                     <h1 class="text-xl font-bold text-secondary-900">{{ currentResume?.title || 'Resume Builder' }}</h1>
                     <div class="flex items-center gap-2 mt-0.5">
                         <span :class="statusBadge(currentResume?.status)">{{ statusLabel(currentResume?.status)
-                            }}</span>
+                        }}</span>
                         <span v-if="currentResume?.matchScore"
                             class="flex items-center gap-1 text-xs text-secondary-500">
                             <BarChart2 class="w-3 h-3" />
@@ -323,7 +323,7 @@
                         <p class="mb-2 text-xs font-medium text-secondary-600">Kata Kunci yang Kurang</p>
                         <div class="flex flex-wrap gap-1.5">
                             <span v-for="kw in matchResult.missingKeywords" :key="kw" class="badge badge-danger">{{ kw
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
                     <div v-if="matchResult.suggestions?.length">
@@ -371,12 +371,12 @@
                             </p>
                             <div v-for="exp in previewData.experience" :key="exp.company" class="mb-2">
                                 <p class="text-xs font-semibold text-secondary-800">{{ exp.position }} — {{ exp.company
-                                    }}</p>
+                                }}</p>
                                 <p class="text-xs text-secondary-500">{{ exp.startDate }} - {{ exp.isCurrent ?
                                     'Sekarang' : exp.endDate }}</p>
                                 <ul v-if="exp.description?.length" class="mt-1">
                                     <li v-for="d in exp.description" :key="d" class="text-xs text-secondary-600">- {{ d
-                                        }}</li>
+                                    }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -452,58 +452,50 @@ const statusBadge = (status) => ({
     EXPORTED: 'badge badge-info'
 }[status] || 'badge')
 
-const statusLabel = (status) => ({
-    DRAFT: 'Draft',
-    GENERATED: 'Digenerate',
-    EXPORTED: 'Diekspor'
-}[status] || status || 'Draft')
-
 const addExperience = () => {
     form.value.experience.push({
         company: '', position: '', startDate: '', endDate: '',
         isCurrent: false, descriptionText: '', description: []
     })
-    info('Pengalaman baru ditambahkan')
 }
 
-const handleRemoveExperience = async (index) => {
+const removeExperience = async (index) => {
     const confirmed = await open({
         title: 'Hapus Pengalaman',
-        message: 'Apakah kamu yakin ingin menghapus pengalaman ini?',
+        message: 'Apakah kamu yakin ingin menghapus pengalaman kerja ini?',
         confirmText: 'Hapus',
         cancelText: 'Batal',
         type: 'danger'
     })
     if (!confirmed) return
     form.value.experience.splice(index, 1)
-    success('Pengalaman berhasil dihapus')
+    success('Pengalaman kerja berhasil dihapus')
 }
 
 const addEducation = () => {
     form.value.education.push({
         institution: '', degree: '', field: '', gpa: '', startDate: '', endDate: ''
     })
-    info('Pendidikan baru ditambahkan')
 }
 
-const handleRemoveEducation = async (index) => {
+const removeEducation = async (index) => {
     const confirmed = await open({
         title: 'Hapus Pendidikan',
-        message: 'Apakah kamu yakin ingin menghapus pendidikan ini?',
+        message: 'Apakah kamu yakin ingin menghapus data pendidikan ini?',
         confirmText: 'Hapus',
         cancelText: 'Batal',
         type: 'danger'
     })
     if (!confirmed) return
     form.value.education.splice(index, 1)
-    success('Pendidikan berhasil dihapus')
+    success('Data pendidikan berhasil dihapus')
 }
 
 const addSkill = () => {
     const skill = skillInput.value.trim()
     if (!skill) return
     if (form.value.skills.includes(skill)) {
-        warning('Skill sudah ada dalam daftar')
+        warning('Skill sudah ditambahkan')
         return
     }
     form.value.skills.push(skill)
@@ -552,8 +544,8 @@ const handleGenerate = async () => {
     if (!confirmed) return
 
     try {
-        info('Sedang memproses dengan AI...')
         await update(route.params.id, { cvBase: buildCvBase() })
+        info('Sedang memproses dengan AI...')
         await generate(route.params.id, jobDesc.value)
         success('CV berhasil digenerate dengan AI')
     } catch {
@@ -563,14 +555,14 @@ const handleGenerate = async () => {
 
 const handleRegenerateSection = async (section, index) => {
     const sectionLabel = {
-        summary: 'ringkasan',
-        experience: 'pengalaman',
+        summary: 'ringkasan profesional',
+        experience: 'pengalaman kerja',
         skills: 'keahlian'
     }[section]
 
     const confirmed = await open({
         title: 'Buat Ulang Bagian',
-        message: `AI akan membuat ulang bagian ${sectionLabel}. Lanjutkan?`,
+        message: `AI akan membuat ulang ${sectionLabel} kamu. Lanjutkan?`,
         confirmText: 'Buat Ulang',
         cancelText: 'Batal',
         type: 'info'
@@ -579,11 +571,11 @@ const handleRegenerateSection = async (section, index) => {
     if (!confirmed) return
 
     try {
-        info(`Sedang membuat ulang ${sectionLabel}...`)
+        info('Sedang memproses...')
         await regenerateSection(route.params.id, section, index)
         success(`Bagian ${sectionLabel} berhasil dibuat ulang`)
     } catch {
-        error(`Gagal membuat ulang ${sectionLabel}`)
+        error('Gagal membuat ulang bagian, coba lagi')
     }
 }
 
@@ -607,20 +599,6 @@ const handleExport = async () => {
     }
 }
 
-const handleParsed = (data) => {
-    form.value = {
-        personalInfo: data.personalInfo || { name: '', email: '', phone: '', address: '', linkedin: '', website: '' },
-        summary: data.summary || '',
-        experience: (data.experience || []).map((exp) => ({
-            ...exp,
-            descriptionText: (exp.description || []).join('\n')
-        })),
-        education: data.education || [],
-        skills: data.skills || []
-    }
-    success('CV berhasil diparse, form telah diisi otomatis')
-}
-
 const populateForm = (resume) => {
     if (!resume) return
     const cv = resume.generatedCv || resume.cvBase
@@ -637,9 +615,27 @@ const populateForm = (resume) => {
     if (resume.jobDesc) jobDesc.value = resume.jobDesc
 }
 
+const handleParsed = (data) => {
+    form.value = {
+        personalInfo: data.personalInfo || { name: '', email: '', phone: '', address: '', linkedin: '', website: '' },
+        summary: data.summary || '',
+        experience: (data.experience || []).map((exp) => ({
+            ...exp,
+            descriptionText: (exp.description || []).join('\n')
+        })),
+        education: data.education || [],
+        skills: data.skills || []
+    }
+    success('CV berhasil diparse, form sudah terisi')
+}
+
 watch(currentResume, (val) => populateForm(val))
 
 onMounted(async () => {
-    await fetchById(route.params.id)
+    try {
+        await fetchById(route.params.id)
+    } catch {
+        error('Gagal memuat CV, coba lagi')
+    }
 })
 </script>
