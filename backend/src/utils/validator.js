@@ -39,6 +39,16 @@ export const jobDescSchema = z.object({
   jobDesc: z.string().min(10, "Job description must be at least 10 characters"),
 });
 
+export const updateProfileSchema = z.object({
+  name: z.string().min(2, "Nama minimal 2 karakter"),
+  email: z.string().email("Format email tidak valid"),
+});
+
+export const updatePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "Kata sandi lama wajib diisi"),
+  newPassword: z.string().min(8, "Kata sandi baru minimal 8 karakter"),
+});
+
 export const validate = (schema) => (req, res, next) => {
   try {
     schema.parse(req.body);

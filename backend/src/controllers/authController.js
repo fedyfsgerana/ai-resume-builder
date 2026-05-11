@@ -151,3 +151,58 @@ export const getProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { name, email } = req.body;
+
+    const existing = await UserModel.findByEmail(email);
+    if (existing && existing.id !== req.user.id) {
+      const error = new Error("Email sudah digunakan");
+      error.statusCode = 409;
+      throw error;
+    }
+
+    const updated = await UserModel.update(req.user.id, { name, email });
+
+    logger.info(`Profile updated: ${req.user.email}`);
+
+    res.status(200).json({
+      message: "Profil berhasil diperbarui",
+      user: {
+        id: updated.id,
+        name: updated.name,
+        email: updated.email,
+        tier: updated.tier,
+        isVerified: updated.isVerified,
+        createdAt: updated.createdAt,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await UserModel.findById(req.user.id);
+
+    const isValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isValid) {
+      const error = new Error("Kata sandi lama tidak sesuai");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 12);
+    await UserModel.update(req.user.id, { password: hashed });
+
+    logger.info(`Password updated: ${req.user.email}`);
+
+    res.status(200).json({ message: "Kata sandi berhasil diperbarui" });
+  } catch (error) {
+    next(error);
+  }
+};

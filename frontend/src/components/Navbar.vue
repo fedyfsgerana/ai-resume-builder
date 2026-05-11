@@ -38,6 +38,12 @@
                                     <LayoutDashboard class="w-4 h-4" />
                                     Dasbor
                                 </RouterLink>
+                                <RouterLink to="/profile"
+                                    class="flex items-center gap-2 px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-50"
+                                    @click="dropdownOpen = false">
+                                    <UserCircle class="w-4 h-4" />
+                                    Profil Saya
+                                </RouterLink>
                                 <button @click="handleLogout"
                                     class="flex items-center w-full gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                                     <LogOut class="w-4 h-4" />
@@ -66,7 +72,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { FileText, LayoutDashboard, ChevronDown, LogIn, LogOut, Zap } from 'lucide-vue-next'
+import { LayoutDashboard, ChevronDown, LogIn, LogOut, Zap, UserCircle } from 'lucide-vue-next'
 import { useAuth } from '@/composables/useAuth.js'
 import { useToast } from '@/composables/useToast.js'
 import { useConfirm } from '@/composables/useConfirm.js'
