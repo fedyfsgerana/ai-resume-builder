@@ -29,7 +29,6 @@ export const generateResume = async (req, res, next) => {
 
     logger.info(`Generating resume for: ${id}`);
 
-    // Generate bullet points for each experience
     const updatedExperience = await Promise.all(
       cvBase.experience?.map(async (exp) => {
         const newBullets = await generateBulletPoints(exp, jobDesc);
@@ -37,13 +36,10 @@ export const generateResume = async (req, res, next) => {
       }) || [],
     );
 
-    // Generate summary
     const updatedSummary = await generateSummary(cvBase, jobDesc);
 
-    // Reorder skills
     const updatedSkills = await reorderSkills(cvBase.skills || [], jobDesc);
 
-    // Build generated CV
     const generatedCv = {
       ...cvBase,
       summary: updatedSummary,
@@ -51,10 +47,8 @@ export const generateResume = async (req, res, next) => {
       skills: updatedSkills,
     };
 
-    // Calculate match score
     const matchResult = await generateMatchScore(generatedCv, jobDesc);
 
-    // Save to database
     const updated = await ResumeModel.update(id, {
       jobDesc,
       generatedCv,

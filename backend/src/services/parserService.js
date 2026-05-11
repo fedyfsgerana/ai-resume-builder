@@ -36,23 +36,18 @@ const parseResumeText = (text) => {
     skills: [],
   };
 
-  // Extract email
   const emailMatch = text.match(/[\w.-]+@[\w.-]+\.\w+/);
   if (emailMatch) result.personalInfo.email = emailMatch[0];
 
-  // Extract phone
   const phoneMatch = text.match(/(\+?\d[\d\s\-().]{7,}\d)/);
   if (phoneMatch) result.personalInfo.phone = phoneMatch[0].trim();
 
-  // Extract LinkedIn
   const linkedinMatch = text.match(/linkedin\.com\/in\/[\w-]+/i);
   if (linkedinMatch) result.personalInfo.linkedin = linkedinMatch[0];
 
-  // Extract website
   const websiteMatch = text.match(/https?:\/\/(?!linkedin)[\w.-]+\.\w+/i);
   if (websiteMatch) result.personalInfo.website = websiteMatch[0];
 
-  // First non-empty line is usually the name
   if (lines.length > 0) {
     const firstLine = lines[0];
     if (!firstLine.includes("@") && !firstLine.match(/^\d/)) {
@@ -60,7 +55,6 @@ const parseResumeText = (text) => {
     }
   }
 
-  // Extract sections
   let currentSection = null;
   let currentExp = null;
   let currentEdu = null;
@@ -77,7 +71,6 @@ const parseResumeText = (text) => {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].toLowerCase();
 
-    // Detect section headers
     let detectedSection = null;
     for (const [section, keywords] of Object.entries(sectionKeywords)) {
       if (keywords.some((kw) => line.includes(kw))) {
@@ -99,7 +92,6 @@ const parseResumeText = (text) => {
       continue;
     }
 
-    // Parse by section
     if (currentSection === "summary") {
       summaryLines.push(lines[i]);
     }
@@ -156,7 +148,6 @@ const parseResumeText = (text) => {
     }
   }
 
-  // Push last items
   if (currentExp) result.experience.push(currentExp);
   if (currentEdu) result.education.push(currentEdu);
 
@@ -180,7 +171,6 @@ export const parseCV = async (filePath, mimetype) => {
 
     const parsed = parseResumeText(text);
 
-    // Cleanup uploaded file
     fs.unlinkSync(filePath);
 
     return parsed;

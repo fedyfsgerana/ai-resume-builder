@@ -11,13 +11,11 @@ export const generatePDF = (resumeData) => {
 
     const { personalInfo, summary, experience, education, skills } = resumeData;
 
-    // Header - Name
     doc
       .fontSize(24)
       .font("Helvetica-Bold")
       .text(personalInfo.name, { align: "center" });
 
-    // Contact Info
     doc.fontSize(10).font("Helvetica");
     const contacts = [
       personalInfo.email,
@@ -32,11 +30,9 @@ export const generatePDF = (resumeData) => {
     doc.text(contacts, { align: "center" });
     doc.moveDown();
 
-    // Divider
     doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
     doc.moveDown(0.5);
 
-    // Summary
     if (summary) {
       doc.fontSize(12).font("Helvetica-Bold").text("SUMMARY");
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
@@ -45,7 +41,6 @@ export const generatePDF = (resumeData) => {
       doc.moveDown();
     }
 
-    // Experience
     if (experience && experience.length > 0) {
       doc.fontSize(12).font("Helvetica-Bold").text("EXPERIENCE");
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
@@ -68,7 +63,6 @@ export const generatePDF = (resumeData) => {
       });
     }
 
-    // Education
     if (education && education.length > 0) {
       doc.fontSize(12).font("Helvetica-Bold").text("EDUCATION");
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
@@ -87,7 +81,6 @@ export const generatePDF = (resumeData) => {
       });
     }
 
-    // Skills
     if (skills && skills.length > 0) {
       doc.fontSize(12).font("Helvetica-Bold").text("SKILLS");
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
