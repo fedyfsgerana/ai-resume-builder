@@ -30,7 +30,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Nunito', 'sans-serif']
+        sans: ['Plus Jakarta Sans', 'sans-serif']
       },
       borderRadius: {
         xl: '1rem',
