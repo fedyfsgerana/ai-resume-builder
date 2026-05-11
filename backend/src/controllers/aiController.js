@@ -1,10 +1,9 @@
-import { ResumeModel } from "../models/Resume.js";
 import {
   generateBulletPoints,
   generateSummary,
   generateMatchScore,
   reorderSkills,
-} from "../services/openaiService.js";
+} from "../services/groqService.js";
 import { logger } from "../config/logger.js";
 
 export const generateResume = async (req, res, next) => {
