@@ -23,6 +23,7 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "openai": "^4.28.0",
+    "pdfkit": "^0.18.0",
     "pino": "^8.18.0",
     "pino-pretty": "^11.0.0",
     "redis": "^4.6.13",
