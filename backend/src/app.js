@@ -7,6 +7,7 @@ import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import authRoutes from "./routes/authRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 
@@ -40,6 +41,8 @@ app.use("/api/ai", aiRoutes);
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Server is running" });
 });
+
+app.use("/api/upload", uploadRoutes);
 
 // Error handler
 app.use(errorMiddleware);

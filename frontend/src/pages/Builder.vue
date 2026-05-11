@@ -20,6 +20,7 @@
             </div>
 
             <div class="flex items-center gap-2">
+                <UploadCV @parsed="handleParsed" />
                 <button @click="handleExport" :disabled="!currentResume?.generatedCv || loading"
                     class="flex items-center gap-2 text-sm btn-outline">
                     <Download class="w-4 h-4" />
@@ -316,7 +317,7 @@
                         <p class="mb-2 text-xs font-medium text-secondary-600">Missing Keywords</p>
                         <div class="flex flex-wrap gap-1.5">
                             <span v-for="kw in matchResult.missingKeywords" :key="kw" class="badge badge-danger">{{ kw
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
                     <div v-if="matchResult.suggestions?.length">
@@ -364,12 +365,12 @@
                             </p>
                             <div v-for="exp in previewData.experience" :key="exp.company" class="mb-2">
                                 <p class="text-xs font-semibold text-secondary-800">{{ exp.position }} — {{ exp.company
-                                    }}</p>
+                                }}</p>
                                 <p class="text-xs text-secondary-500">{{ exp.startDate }} - {{ exp.isCurrent ? 'Present'
                                     : exp.endDate }}</p>
                                 <ul v-if="exp.description?.length" class="mt-1">
                                     <li v-for="d in exp.description" :key="d" class="text-xs text-secondary-600">- {{ d
-                                        }}</li>
+                                    }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -410,6 +411,7 @@ import {
 } from 'lucide-vue-next'
 import { useResume } from '@/composables/useResume.js'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import UploadCV from '@/components/UploadCV.vue'
 
 const route = useRoute()
 const { currentResume, matchResult, loading, generating, error, fetchById, update, generate, regenerateSection, exportResume } = useResume()
@@ -527,4 +529,17 @@ watch(currentResume, (val) => populateForm(val))
 onMounted(async () => {
     await fetchById(route.params.id)
 })
+
+const handleParsed = (data) => {
+    form.value = {
+        personalInfo: data.personalInfo || { name: '', email: '', phone: '', address: '', linkedin: '', website: '' },
+        summary: data.summary || '',
+        experience: (data.experience || []).map((exp) => ({
+            ...exp,
+            descriptionText: (exp.description || []).join('\n')
+        })),
+        education: data.education || [],
+        skills: data.skills || []
+    }
+}
 </script>
