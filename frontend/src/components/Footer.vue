@@ -1,14 +1,14 @@
 <template>
-    <footer class="bg-white border-t border-secondary-200 mt-auto">
-        <div class="container mx-auto px-4 max-w-7xl py-6">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer class="mt-auto bg-white border-t border-secondary-200">
+        <div class="container px-4 py-6 mx-auto max-w-7xl">
+            <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
                 <div class="flex items-center gap-2">
-                    <FileText class="w-5 h-5 text-primary-600" />
+                    <img src="/logo.svg" alt="AI Resume Builder" class="w-6 h-6" />
                     <span class="text-lg font-bold text-primary-600">AI Resume Builder</span>
-                    <span class="text-secondary-400 text-sm">v{{ version }}</span>
+                    <span class="text-sm text-secondary-400">v{{ version }}</span>
                 </div>
 
-                <p class="text-secondary-500 text-sm">
+                <p class="text-sm text-secondary-500">
                     &copy; {{ currentYear }} AI Resume Builder. All rights reserved.
                 </p>
 

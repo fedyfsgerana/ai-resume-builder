@@ -1,11 +1,11 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-secondary-50 px-4">
+    <div class="flex items-center justify-center min-h-screen px-4 bg-secondary-50">
         <div class="w-full max-w-md">
-            <div class="text-center mb-8">
-                <RouterLink to="/" class="inline-flex items-center gap-2">
-                    <span class="text-2xl font-bold text-primary-600">AI Resume Builder</span>
+            <div class="mb-8 text-center">
+                <RouterLink to="/" class="inline-flex items-center justify-center">
+                    <img src="/logo-full.svg" alt="AI Resume Builder" class="w-auto h-14" />
                 </RouterLink>
-                <p class="text-secondary-500 mt-2 text-sm">Build smarter resumes with AI</p>
+                <p class="mt-2 text-sm text-secondary-500">Build smarter resumes with AI</p>
             </div>
             <div class="card">
                 <RouterView />
