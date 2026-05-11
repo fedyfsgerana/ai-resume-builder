@@ -9,11 +9,12 @@
                 <div>
                     <h1 class="text-xl font-bold text-secondary-900">{{ currentResume?.title || 'Resume Builder' }}</h1>
                     <div class="flex items-center gap-2 mt-0.5">
-                        <span :class="statusBadge(currentResume?.status)">{{ currentResume?.status || 'DRAFT' }}</span>
+                        <span :class="statusBadge(currentResume?.status)">{{ statusLabel(currentResume?.status)
+                            }}</span>
                         <span v-if="currentResume?.matchScore"
                             class="flex items-center gap-1 text-xs text-secondary-500">
                             <BarChart2 class="w-3 h-3" />
-                            {{ currentResume.matchScore }}% match
+                            {{ currentResume.matchScore }}% kecocokan
                         </span>
                     </div>
                 </div>
@@ -24,16 +25,16 @@
                 <button @click="handleExport" :disabled="!currentResume?.generatedCv || loading"
                     class="flex items-center gap-2 text-sm btn-outline">
                     <Download class="w-4 h-4" />
-                    Export PDF
+                    Ekspor PDF
                 </button>
                 <button @click="handleSave" :disabled="loading" class="flex items-center gap-2 text-sm btn-primary">
                     <Save class="w-4 h-4" />
-                    Save
+                    Simpan
                 </button>
             </div>
         </div>
 
-        <LoadingSpinner v-if="loading && !currentResume" text="Loading resume..." fullscreen />
+        <LoadingSpinner v-if="loading && !currentResume" text="Memuat resume..." fullscreen />
 
         <div v-else class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <!-- Left: Editor -->
@@ -43,38 +44,38 @@
                 <div class="card">
                     <div class="flex items-center gap-2 mb-4">
                         <User class="w-5 h-5 text-primary-600" />
-                        <h2 class="font-semibold text-secondary-900">Personal Information</h2>
+                        <h2 class="font-semibold text-secondary-900">Informasi Pribadi</h2>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block mb-1 text-xs font-medium text-secondary-600">Full Name</label>
+                            <label class="block mb-1 text-xs font-medium text-secondary-600">Nama Lengkap</label>
                             <input v-model="form.personalInfo.name" type="text" class="text-sm input"
-                                placeholder="John Doe" />
+                                placeholder="Masukkan nama lengkap" />
                         </div>
                         <div>
                             <label class="block mb-1 text-xs font-medium text-secondary-600">Email</label>
                             <input v-model="form.personalInfo.email" type="email" class="text-sm input"
-                                placeholder="you@example.com" />
+                                placeholder="Masukkan email" />
                         </div>
                         <div>
-                            <label class="block mb-1 text-xs font-medium text-secondary-600">Phone</label>
+                            <label class="block mb-1 text-xs font-medium text-secondary-600">Nomor Telepon</label>
                             <input v-model="form.personalInfo.phone" type="text" class="text-sm input"
-                                placeholder="+62 812 3456 7890" />
+                                placeholder="Masukkan nomor telepon" />
                         </div>
                         <div>
-                            <label class="block mb-1 text-xs font-medium text-secondary-600">Address</label>
+                            <label class="block mb-1 text-xs font-medium text-secondary-600">Alamat</label>
                             <input v-model="form.personalInfo.address" type="text" class="text-sm input"
-                                placeholder="Jakarta, Indonesia" />
+                                placeholder="Masukkan alamat" />
                         </div>
                         <div>
                             <label class="block mb-1 text-xs font-medium text-secondary-600">LinkedIn</label>
                             <input v-model="form.personalInfo.linkedin" type="text" class="text-sm input"
-                                placeholder="linkedin.com/in/johndoe" />
+                                placeholder="Masukkan URL LinkedIn" />
                         </div>
                         <div>
                             <label class="block mb-1 text-xs font-medium text-secondary-600">Website</label>
                             <input v-model="form.personalInfo.website" type="text" class="text-sm input"
-                                placeholder="johndoe.com" />
+                                placeholder="Masukkan URL website" />
                         </div>
                     </div>
                 </div>
@@ -84,17 +85,17 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <AlignLeft class="w-5 h-5 text-primary-600" />
-                            <h2 class="font-semibold text-secondary-900">Professional Summary</h2>
+                            <h2 class="font-semibold text-secondary-900">Ringkasan Profesional</h2>
                         </div>
                         <button v-if="currentResume?.generatedCv" @click="handleRegenerateSection('summary')"
                             :disabled="generating"
                             class="flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700">
                             <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': generating }" />
-                            Regenerate
+                            Buat Ulang
                         </button>
                     </div>
                     <textarea v-model="form.summary" rows="4" class="text-sm resize-none input"
-                        placeholder="Write a professional summary..."></textarea>
+                        placeholder="Tulis ringkasan profesional..."></textarea>
                 </div>
 
                 <!-- Experience -->
@@ -102,67 +103,70 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <Briefcase class="w-5 h-5 text-primary-600" />
-                            <h2 class="font-semibold text-secondary-900">Work Experience</h2>
+                            <h2 class="font-semibold text-secondary-900">Pengalaman Kerja</h2>
                         </div>
                         <button @click="addExperience"
                             class="flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700">
                             <PlusCircle class="w-4 h-4" />
-                            Add
+                            Tambah
                         </button>
                     </div>
 
                     <div v-if="form.experience.length === 0" class="py-8 text-sm text-center text-secondary-400">
                         <Briefcase class="w-8 h-8 mx-auto mb-2 text-secondary-300" />
-                        No experience added yet
+                        Belum ada pengalaman ditambahkan
                     </div>
 
                     <div v-else class="flex flex-col gap-4">
                         <div v-for="(exp, index) in form.experience" :key="index"
                             class="flex flex-col gap-3 p-4 border rounded-xl border-secondary-100">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-secondary-700">Experience {{ index + 1 }}</span>
+                                <span class="text-sm font-medium text-secondary-700">Pengalaman {{ index + 1 }}</span>
                                 <div class="flex items-center gap-2">
                                     <button v-if="currentResume?.generatedCv"
                                         @click="handleRegenerateSection('experience', index)" :disabled="generating"
                                         class="flex items-center gap-1 text-xs text-primary-600">
                                         <RefreshCw class="w-3 h-3" :class="{ 'animate-spin': generating }" />
-                                        Regenerate
+                                        Buat Ulang
                                     </button>
-                                    <button @click="removeExperience(index)" class="text-red-400 hover:text-red-600">
+                                    <button @click="handleRemoveExperience(index)"
+                                        class="text-red-400 hover:text-red-600">
                                         <Trash2 class="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Company</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Perusahaan</label>
                                     <input v-model="exp.company" type="text" class="text-sm input"
-                                        placeholder="Company name" />
+                                        placeholder="Masukkan nama perusahaan" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Position</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Posisi</label>
                                     <input v-model="exp.position" type="text" class="text-sm input"
-                                        placeholder="Job title" />
+                                        placeholder="Masukkan posisi jabatan" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Start Date</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Tanggal
+                                        Mulai</label>
                                     <input v-model="exp.startDate" type="text" class="text-sm input"
-                                        placeholder="Jan 2023" />
+                                        placeholder="Masukkan tanggal mulai" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">End Date</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Tanggal
+                                        Selesai</label>
                                     <input v-model="exp.endDate" type="text" class="text-sm input"
-                                        placeholder="Dec 2024" :disabled="exp.isCurrent" />
+                                        placeholder="Masukkan tanggal selesai" :disabled="exp.isCurrent" />
                                 </div>
                             </div>
                             <label class="flex items-center gap-2 text-sm cursor-pointer text-secondary-600">
                                 <input v-model="exp.isCurrent" type="checkbox" class="rounded" />
-                                Currently working here
+                                Masih bekerja di sini
                             </label>
                             <div>
-                                <label class="block mb-1 text-xs font-medium text-secondary-600">Description</label>
+                                <label class="block mb-1 text-xs font-medium text-secondary-600">Deskripsi</label>
                                 <textarea v-model="exp.descriptionText" rows="3" class="text-sm resize-none input"
-                                    placeholder="One bullet point per line..."></textarea>
+                                    placeholder="Tulis deskripsi pekerjaan per baris..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -173,58 +177,60 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <GraduationCap class="w-5 h-5 text-primary-600" />
-                            <h2 class="font-semibold text-secondary-900">Education</h2>
+                            <h2 class="font-semibold text-secondary-900">Pendidikan</h2>
                         </div>
                         <button @click="addEducation"
                             class="flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700">
                             <PlusCircle class="w-4 h-4" />
-                            Add
+                            Tambah
                         </button>
                     </div>
 
                     <div v-if="form.education.length === 0" class="py-8 text-sm text-center text-secondary-400">
                         <GraduationCap class="w-8 h-8 mx-auto mb-2 text-secondary-300" />
-                        No education added yet
+                        Belum ada pendidikan ditambahkan
                     </div>
 
                     <div v-else class="flex flex-col gap-4">
                         <div v-for="(edu, index) in form.education" :key="index"
                             class="flex flex-col gap-3 p-4 border rounded-xl border-secondary-100">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-secondary-700">Education {{ index + 1 }}</span>
-                                <button @click="removeEducation(index)" class="text-red-400 hover:text-red-600">
+                                <span class="text-sm font-medium text-secondary-700">Pendidikan {{ index + 1 }}</span>
+                                <button @click="handleRemoveEducation(index)" class="text-red-400 hover:text-red-600">
                                     <Trash2 class="w-4 h-4" />
                                 </button>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Institution</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Institusi</label>
                                     <input v-model="edu.institution" type="text" class="text-sm input"
-                                        placeholder="University name" />
+                                        placeholder="Masukkan nama institusi" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Degree</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Jenjang</label>
                                     <input v-model="edu.degree" type="text" class="text-sm input"
-                                        placeholder="Bachelor's Degree" />
+                                        placeholder="Masukkan jenjang pendidikan" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Field of
-                                        Study</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Jurusan</label>
                                     <input v-model="edu.field" type="text" class="text-sm input"
-                                        placeholder="Computer Science" />
+                                        placeholder="Masukkan jurusan" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">GPA</label>
-                                    <input v-model="edu.gpa" type="text" class="text-sm input" placeholder="3.8" />
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">IPK</label>
+                                    <input v-model="edu.gpa" type="text" class="text-sm input"
+                                        placeholder="Masukkan IPK" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Start Date</label>
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Tahun Mulai</label>
                                     <input v-model="edu.startDate" type="text" class="text-sm input"
-                                        placeholder="2019" />
+                                        placeholder="Masukkan tahun mulai" />
                                 </div>
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-secondary-600">End Date</label>
-                                    <input v-model="edu.endDate" type="text" class="text-sm input" placeholder="2023" />
+                                    <label class="block mb-1 text-xs font-medium text-secondary-600">Tahun
+                                        Selesai</label>
+                                    <input v-model="edu.endDate" type="text" class="text-sm input"
+                                        placeholder="Masukkan tahun selesai" />
                                 </div>
                             </div>
                         </div>
@@ -236,16 +242,16 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <Wrench class="w-5 h-5 text-primary-600" />
-                            <h2 class="font-semibold text-secondary-900">Skills</h2>
+                            <h2 class="font-semibold text-secondary-900">Keahlian</h2>
                         </div>
                         <button v-if="currentResume?.generatedCv" @click="handleRegenerateSection('skills')"
                             :disabled="generating" class="flex items-center gap-1.5 text-xs text-primary-600">
                             <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': generating }" />
-                            Regenerate
+                            Buat Ulang
                         </button>
                     </div>
                     <input v-model="skillInput" type="text" class="mb-3 text-sm input"
-                        placeholder="Type a skill and press Enter..." @keydown.enter.prevent="addSkill" />
+                        placeholder="Ketik skill lalu tekan Enter..." @keydown.enter.prevent="addSkill" />
                     <div class="flex flex-wrap gap-2">
                         <span v-for="(skill, index) in form.skills" :key="index"
                             class="flex items-center gap-1.5 bg-primary-50 text-primary-700 text-sm px-3 py-1 rounded-full">
@@ -261,16 +267,16 @@
                 <div class="card">
                     <div class="flex items-center gap-2 mb-4">
                         <ClipboardList class="w-5 h-5 text-primary-600" />
-                        <h2 class="font-semibold text-secondary-900">Job Description</h2>
+                        <h2 class="font-semibold text-secondary-900">Deskripsi Pekerjaan</h2>
                     </div>
                     <textarea v-model="jobDesc" rows="6" class="mb-4 text-sm resize-none input"
-                        placeholder="Paste the job description here..."></textarea>
+                        placeholder="Tempel deskripsi pekerjaan di sini..."></textarea>
                     <button @click="handleGenerate" :disabled="generating || !jobDesc.trim()"
                         class="flex items-center justify-center w-full gap-2 btn-primary">
                         <LoadingSpinner v-if="generating" size="sm" />
                         <span v-else class="flex items-center gap-2">
                             <Sparkles class="w-4 h-4" />
-                            Generate with AI
+                            Generate dengan AI
                         </span>
                     </button>
                 </div>
@@ -283,7 +289,7 @@
                 <div v-if="matchResult" class="card">
                     <div class="flex items-center gap-2 mb-4">
                         <BarChart2 class="w-5 h-5 text-primary-600" />
-                        <h2 class="font-semibold text-secondary-900">Match Score</h2>
+                        <h2 class="font-semibold text-secondary-900">Skor Kecocokan</h2>
                     </div>
                     <div class="flex items-center gap-4 mb-4">
                         <div class="relative w-20 h-20">
@@ -300,28 +306,28 @@
                         </div>
                         <div class="flex flex-col gap-1 text-sm">
                             <span class="flex items-center justify-between gap-8">
-                                <span class="text-secondary-500">Skills</span>
+                                <span class="text-secondary-500">Keahlian</span>
                                 <span class="font-medium">{{ matchResult.breakdown?.skills }}%</span>
                             </span>
                             <span class="flex items-center justify-between gap-8">
-                                <span class="text-secondary-500">Experience</span>
+                                <span class="text-secondary-500">Pengalaman</span>
                                 <span class="font-medium">{{ matchResult.breakdown?.experience }}%</span>
                             </span>
                             <span class="flex items-center justify-between gap-8">
-                                <span class="text-secondary-500">Education</span>
+                                <span class="text-secondary-500">Pendidikan</span>
                                 <span class="font-medium">{{ matchResult.breakdown?.education }}%</span>
                             </span>
                         </div>
                     </div>
                     <div v-if="matchResult.missingKeywords?.length" class="mb-3">
-                        <p class="mb-2 text-xs font-medium text-secondary-600">Missing Keywords</p>
+                        <p class="mb-2 text-xs font-medium text-secondary-600">Kata Kunci yang Kurang</p>
                         <div class="flex flex-wrap gap-1.5">
                             <span v-for="kw in matchResult.missingKeywords" :key="kw" class="badge badge-danger">{{ kw
                                 }}</span>
                         </div>
                     </div>
                     <div v-if="matchResult.suggestions?.length">
-                        <p class="mb-2 text-xs font-medium text-secondary-600">Suggestions</p>
+                        <p class="mb-2 text-xs font-medium text-secondary-600">Saran Perbaikan</p>
                         <ul class="flex flex-col gap-1">
                             <li v-for="s in matchResult.suggestions" :key="s"
                                 class="flex items-start gap-2 text-xs text-secondary-600">
@@ -336,13 +342,13 @@
                 <div class="card">
                     <div class="flex items-center gap-2 mb-4">
                         <Eye class="w-5 h-5 text-primary-600" />
-                        <h2 class="font-semibold text-secondary-900">Preview</h2>
+                        <h2 class="font-semibold text-secondary-900">Pratinjau</h2>
                     </div>
 
                     <div class="p-6 font-mono text-sm leading-relaxed bg-secondary-50 rounded-xl">
                         <div class="mb-4 text-center">
                             <p class="text-lg font-bold text-secondary-900">
-                                {{ previewData.personalInfo?.name || 'Your Name' }}
+                                {{ previewData.personalInfo?.name || 'Nama Kamu' }}
                             </p>
                             <p class="mt-1 text-xs text-secondary-500">
                                 {{ [previewData.personalInfo?.email, previewData.personalInfo?.phone,
@@ -353,7 +359,7 @@
                         <div v-if="previewData.summary" class="mb-4">
                             <p
                                 class="pb-1 mb-2 text-xs font-bold tracking-wider uppercase border-b text-secondary-700 border-secondary-200">
-                                Summary
+                                Ringkasan
                             </p>
                             <p class="text-xs text-secondary-600">{{ previewData.summary }}</p>
                         </div>
@@ -361,16 +367,16 @@
                         <div v-if="previewData.experience?.length" class="mb-4">
                             <p
                                 class="pb-1 mb-2 text-xs font-bold tracking-wider uppercase border-b text-secondary-700 border-secondary-200">
-                                Experience
+                                Pengalaman
                             </p>
                             <div v-for="exp in previewData.experience" :key="exp.company" class="mb-2">
                                 <p class="text-xs font-semibold text-secondary-800">{{ exp.position }} — {{ exp.company
-                                }}</p>
-                                <p class="text-xs text-secondary-500">{{ exp.startDate }} - {{ exp.isCurrent ? 'Present'
-                                    : exp.endDate }}</p>
+                                    }}</p>
+                                <p class="text-xs text-secondary-500">{{ exp.startDate }} - {{ exp.isCurrent ?
+                                    'Sekarang' : exp.endDate }}</p>
                                 <ul v-if="exp.description?.length" class="mt-1">
                                     <li v-for="d in exp.description" :key="d" class="text-xs text-secondary-600">- {{ d
-                                    }}</li>
+                                        }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -378,7 +384,7 @@
                         <div v-if="previewData.education?.length" class="mb-4">
                             <p
                                 class="pb-1 mb-2 text-xs font-bold tracking-wider uppercase border-b text-secondary-700 border-secondary-200">
-                                Education
+                                Pendidikan
                             </p>
                             <div v-for="edu in previewData.education" :key="edu.institution" class="mb-2">
                                 <p class="text-xs font-semibold text-secondary-800">{{ edu.institution }}</p>
@@ -390,7 +396,7 @@
                         <div v-if="previewData.skills?.length">
                             <p
                                 class="pb-1 mb-2 text-xs font-bold tracking-wider uppercase border-b text-secondary-700 border-secondary-200">
-                                Skills
+                                Keahlian
                             </p>
                             <p class="text-xs text-secondary-600">{{ previewData.skills.join(', ') }}</p>
                         </div>
@@ -410,11 +416,15 @@ import {
     PlusCircle, Trash2, RefreshCw, X, Eye, Lightbulb
 } from 'lucide-vue-next'
 import { useResume } from '@/composables/useResume.js'
+import { useToast } from '@/composables/useToast.js'
+import { useConfirm } from '@/composables/useConfirm.js'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import UploadCV from '@/components/UploadCV.vue'
 
 const route = useRoute()
-const { currentResume, matchResult, loading, generating, error, fetchById, update, generate, regenerateSection, exportResume } = useResume()
+const { currentResume, matchResult, loading, generating, fetchById, update, generate, regenerateSection, exportResume } = useResume()
+const { success, error, info, warning } = useToast()
+const { open } = useConfirm()
 
 const jobDesc = ref('')
 const skillInput = ref('')
@@ -442,32 +452,61 @@ const statusBadge = (status) => ({
     EXPORTED: 'badge badge-info'
 }[status] || 'badge')
 
+const statusLabel = (status) => ({
+    DRAFT: 'Draft',
+    GENERATED: 'Digenerate',
+    EXPORTED: 'Diekspor'
+}[status] || status || 'Draft')
+
 const addExperience = () => {
     form.value.experience.push({
         company: '', position: '', startDate: '', endDate: '',
         isCurrent: false, descriptionText: '', description: []
     })
+    info('Pengalaman baru ditambahkan')
 }
 
-const removeExperience = (index) => {
+const handleRemoveExperience = async (index) => {
+    const confirmed = await open({
+        title: 'Hapus Pengalaman',
+        message: 'Apakah kamu yakin ingin menghapus pengalaman ini?',
+        confirmText: 'Hapus',
+        cancelText: 'Batal',
+        type: 'danger'
+    })
+    if (!confirmed) return
     form.value.experience.splice(index, 1)
+    success('Pengalaman berhasil dihapus')
 }
 
 const addEducation = () => {
     form.value.education.push({
         institution: '', degree: '', field: '', gpa: '', startDate: '', endDate: ''
     })
+    info('Pendidikan baru ditambahkan')
 }
 
-const removeEducation = (index) => {
+const handleRemoveEducation = async (index) => {
+    const confirmed = await open({
+        title: 'Hapus Pendidikan',
+        message: 'Apakah kamu yakin ingin menghapus pendidikan ini?',
+        confirmText: 'Hapus',
+        cancelText: 'Batal',
+        type: 'danger'
+    })
+    if (!confirmed) return
     form.value.education.splice(index, 1)
+    success('Pendidikan berhasil dihapus')
 }
 
 const addSkill = () => {
     const skill = skillInput.value.trim()
-    if (skill && !form.value.skills.includes(skill)) {
-        form.value.skills.push(skill)
+    if (!skill) return
+    if (form.value.skills.includes(skill)) {
+        warning('Skill sudah ada dalam daftar')
+        return
     }
+    form.value.skills.push(skill)
     skillInput.value = ''
 }
 
@@ -488,24 +527,98 @@ const buildCvBase = () => {
 }
 
 const handleSave = async () => {
-    await update(route.params.id, { cvBase: buildCvBase() })
+    try {
+        await update(route.params.id, { cvBase: buildCvBase() })
+        success('CV berhasil disimpan')
+    } catch {
+        error('Gagal menyimpan CV, coba lagi')
+    }
 }
 
 const handleGenerate = async () => {
     if (!jobDesc.value || jobDesc.value.trim().length < 10) {
-        alert('Job description must be at least 10 characters')
+        warning('Deskripsi pekerjaan minimal 10 karakter')
         return
     }
-    await handleSave()
-    await generate(route.params.id, jobDesc.value)
+
+    const confirmed = await open({
+        title: 'Generate dengan AI',
+        message: 'AI akan menulis ulang CV kamu berdasarkan deskripsi pekerjaan. Lanjutkan?',
+        confirmText: 'Generate',
+        cancelText: 'Batal',
+        type: 'info'
+    })
+
+    if (!confirmed) return
+
+    try {
+        info('Sedang memproses dengan AI...')
+        await update(route.params.id, { cvBase: buildCvBase() })
+        await generate(route.params.id, jobDesc.value)
+        success('CV berhasil digenerate dengan AI')
+    } catch {
+        error('Gagal generate CV, coba lagi')
+    }
 }
 
 const handleRegenerateSection = async (section, index) => {
-    await regenerateSection(route.params.id, section, index)
+    const sectionLabel = {
+        summary: 'ringkasan',
+        experience: 'pengalaman',
+        skills: 'keahlian'
+    }[section]
+
+    const confirmed = await open({
+        title: 'Buat Ulang Bagian',
+        message: `AI akan membuat ulang bagian ${sectionLabel}. Lanjutkan?`,
+        confirmText: 'Buat Ulang',
+        cancelText: 'Batal',
+        type: 'info'
+    })
+
+    if (!confirmed) return
+
+    try {
+        info(`Sedang membuat ulang ${sectionLabel}...`)
+        await regenerateSection(route.params.id, section, index)
+        success(`Bagian ${sectionLabel} berhasil dibuat ulang`)
+    } catch {
+        error(`Gagal membuat ulang ${sectionLabel}`)
+    }
 }
 
 const handleExport = async () => {
-    await exportResume(route.params.id)
+    const confirmed = await open({
+        title: 'Ekspor PDF',
+        message: 'CV akan diekspor ke format PDF. Lanjutkan?',
+        confirmText: 'Ekspor',
+        cancelText: 'Batal',
+        type: 'info'
+    })
+
+    if (!confirmed) return
+
+    try {
+        info('Sedang mengekspor CV...')
+        await exportResume(route.params.id)
+        success('CV berhasil diekspor')
+    } catch {
+        error('Gagal mengekspor CV, coba lagi')
+    }
+}
+
+const handleParsed = (data) => {
+    form.value = {
+        personalInfo: data.personalInfo || { name: '', email: '', phone: '', address: '', linkedin: '', website: '' },
+        summary: data.summary || '',
+        experience: (data.experience || []).map((exp) => ({
+            ...exp,
+            descriptionText: (exp.description || []).join('\n')
+        })),
+        education: data.education || [],
+        skills: data.skills || []
+    }
+    success('CV berhasil diparse, form telah diisi otomatis')
 }
 
 const populateForm = (resume) => {
@@ -529,17 +642,4 @@ watch(currentResume, (val) => populateForm(val))
 onMounted(async () => {
     await fetchById(route.params.id)
 })
-
-const handleParsed = (data) => {
-    form.value = {
-        personalInfo: data.personalInfo || { name: '', email: '', phone: '', address: '', linkedin: '', website: '' },
-        summary: data.summary || '',
-        experience: (data.experience || []).map((exp) => ({
-            ...exp,
-            descriptionText: (exp.description || []).join('\n')
-        })),
-        education: data.education || [],
-        skills: data.skills || []
-    }
-}
 </script>
