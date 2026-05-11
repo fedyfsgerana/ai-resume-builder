@@ -16,8 +16,8 @@ const envSchema = z.object({
   JWT_REFRESH_SECRET: z.string().min(10),
   JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
 
-  OPENAI_API_KEY: z.string().startsWith("sk-"),
-  OPENAI_MODEL: z.string().default("gpt-4o-mini"),
+  GROQ_API_KEY: z.string().min(10),
+  GROQ_MODEL: z.string().default("llama3-8b-8192"),
 
   REDIS_URL: z.string().default("redis://localhost:6379"),
   REDIS_TTL: z.string().default("3600"),

@@ -490,6 +490,10 @@ const handleSave = async () => {
 }
 
 const handleGenerate = async () => {
+    if (!jobDesc.value || jobDesc.value.trim().length < 10) {
+        alert('Job description must be at least 10 characters')
+        return
+    }
     await handleSave()
     await generate(route.params.id, jobDesc.value)
 }
