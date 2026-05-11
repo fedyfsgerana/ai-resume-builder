@@ -1,8 +1,10 @@
 import fs from "fs";
-import path from "path";
-import pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import { logger } from "../config/logger.js";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const pdfParse = require("pdf-parse");
 
 const extractTextFromPDF = async (filePath) => {
   const dataBuffer = fs.readFileSync(filePath);
@@ -58,8 +60,8 @@ const parseResumeText = (text) => {
   let currentSection = null;
   let currentExp = null;
   let currentEdu = null;
-  let summaryLines = [];
-  let skillLines = [];
+  const summaryLines = [];
+  const skillLines = [];
 
   const sectionKeywords = {
     summary: ["summary", "profile", "objective", "about"],
@@ -92,9 +94,7 @@ const parseResumeText = (text) => {
       continue;
     }
 
-    if (currentSection === "summary") {
-      summaryLines.push(lines[i]);
-    }
+    if (currentSection === "summary") summaryLines.push(lines[i]);
 
     if (currentSection === "skills") {
       const skillItems = lines[i]
@@ -123,8 +123,8 @@ const parseResumeText = (text) => {
           currentExp.endDate = dates[1] || "";
         }
       } else if (
-        (currentExp && lines[i].startsWith("-")) ||
-        (currentExp && lines[i].startsWith("•"))
+        currentExp &&
+        (lines[i].startsWith("-") || lines[i].startsWith("•"))
       ) {
         currentExp.description.push(lines[i].replace(/^[-•]\s*/, ""));
       }
