@@ -1,10 +1,10 @@
-import { useResumeStore } from "@/stores/resumeStore.js";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
+import { useResumeStore } from '@/stores/resumeStore.js'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
 export const useResume = () => {
-  const resumeStore = useResumeStore();
-  const router = useRouter();
+  const resumeStore = useResumeStore()
+  const router = useRouter()
 
   const {
     resumes,
@@ -14,50 +14,54 @@ export const useResume = () => {
     generating,
     error,
     totalResumes,
-    hasResumes,
-  } = storeToRefs(resumeStore);
+    hasResumes
+  } = storeToRefs(resumeStore)
 
   const fetchAll = async () => {
-    await resumeStore.fetchAll();
-  };
+    await resumeStore.fetchAll()
+  }
 
   const fetchById = async (id) => {
-    await resumeStore.fetchById(id);
-  };
+    await resumeStore.fetchById(id)
+  }
 
   const create = async (payload) => {
-    const resume = await resumeStore.create(payload);
-    router.push({ name: "Builder", params: { id: resume.id } });
-  };
+    const resume = await resumeStore.create(payload)
+    router.push({ name: 'Builder', params: { id: resume.id } })
+  }
 
   const update = async (id, payload) => {
-    await resumeStore.update(id, payload);
-  };
+    await resumeStore.update(id, payload)
+  }
 
   const remove = async (id) => {
-    await resumeStore.remove(id);
-    router.push({ name: "Dashboard" });
-  };
+    await resumeStore.remove(id)
+    router.push({ name: 'Dashboard' })
+  }
 
   const generate = async (id, jobDesc) => {
-    await resumeStore.generate(id, jobDesc);
-  };
+    await resumeStore.generate(id, jobDesc)
+  }
 
   const regenerateSection = async (id, section, index) => {
-    await resumeStore.regenerateSection(id, section, index);
-  };
+    await resumeStore.regenerateSection(id, section, index)
+  }
 
   const fetchMatchScore = async (id) => {
-    await resumeStore.fetchMatchScore(id);
-  };
+    await resumeStore.fetchMatchScore(id)
+  }
 
   const exportResume = async (id) => {
-    await resumeStore.exportResume(id);
-  };
+    await resumeStore.exportResume(id)
+  }
 
   const clearCurrent = () => {
-    resumeStore.clearCurrent();
-  };
+    resumeStore.clearCurrent()
+  }
+
+  const duplicate = async (id) => {
+    await resumeStore.duplicate(id)
+  }
 
   return {
     resumes,
@@ -78,5 +82,6 @@ export const useResume = () => {
     fetchMatchScore,
     exportResume,
     clearCurrent,
-  };
-};
+    duplicate
+  }
+}

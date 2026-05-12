@@ -6,6 +6,7 @@ import {
   updateResume,
   deleteResume,
   exportResume,
+  duplicateResume,
 } from "../controllers/resumeController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { validate, resumeSchema } from "../utils/validator.js";
@@ -20,5 +21,6 @@ router.get("/:id", getResumeById);
 router.put("/:id", updateResume);
 router.delete("/:id", deleteResume);
 router.get("/:id/export", exportResume);
+router.post("/:id/duplicate", duplicateResume);
 
 export default router;

@@ -54,5 +54,15 @@ export const resumeService = {
   async getMatchScore(id) {
     const response = await api.get(`/ai/${id}/match-score`)
     return response.data
+  },
+
+  async duplicate(id) {
+    const response = await api.post(`/resume/${id}/duplicate`)
+    return response.data
+  },
+
+  async analyzeKeywords(id) {
+    const response = await api.get(`/ai/${id}/analyze-keywords`)
+    return response.data
   }
 }

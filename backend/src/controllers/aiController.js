@@ -161,3 +161,87 @@ export const getMatchScore = async (req, res, next) => {
     next(error);
   }
 };
+
+export const analyzeKeywords = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const resume = await ResumeModel.findById(id);
+
+    if (!resume) {
+      const error = new Error("Resume not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    if (resume.userId !== req.user.id) {
+      const error = new Error("Forbidden");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    if (!resume.jobDesc) {
+      const error = new Error(
+        "Deskripsi pekerjaan belum ada, generate CV terlebih dahulu",
+      );
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const cvData = resume.generatedCv || resume.cvBase;
+
+    const Groq = (await import("groq-sdk")).default;
+    const { env } = await import("../config/env.js");
+
+    const groq = new Groq({ apiKey: env.GROQ_API_KEY });
+
+    const prompt = `
+      You are an ATS and resume keyword analysis expert.
+
+      Analyze the keywords between this CV and Job Description in detail.
+
+      Job Description:
+      ${resume.jobDesc}
+
+      CV Data:
+      Name: ${cvData.personalInfo?.name}
+      Summary: ${cvData.summary}
+      Skills: ${cvData.skills?.join(", ")}
+      Experience: ${cvData.experience?.map((e) => `${e.position} at ${e.company}: ${e.description?.join(", ")}`).join("\n")}
+      Education: ${cvData.education?.map((e) => `${e.degree} from ${e.institution}`).join(", ")}
+
+      Return only a JSON object, no explanation, no markdown:
+      {
+        "presentKeywords": [
+          { "keyword": "string", "category": "skill|experience|education|other", "importance": "high|medium|low" }
+        ],
+        "missingKeywords": [
+          { "keyword": "string", "category": "skill|experience|education|other", "importance": "high|medium|low", "suggestion": "string" }
+        ],
+        "overallMatch": 0-100,
+        "categoryScores": {
+          "skills": 0-100,
+          "experience": 0-100,
+          "education": 0-100
+        },
+        "topRecommendations": ["recommendation1", "recommendation2", "recommendation3"]
+      }
+    `;
+
+    const response = await groq.chat.completions.create({
+      model: env.GROQ_MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.3,
+    });
+
+    const content = response.choices[0].message.content;
+    const clean = content.replace(/```json|```/g, "").trim();
+    const analysis = JSON.parse(clean);
+
+    logger.info(`Keyword analysis done for resume: ${id}`);
+
+    res.status(200).json({ analysis });
+  } catch (error) {
+    next(error);
+  }
+};

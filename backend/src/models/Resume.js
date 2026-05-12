@@ -37,4 +37,21 @@ export const ResumeModel = {
       data: { status },
     });
   },
+
+  async duplicate(id, userId) {
+    const original = await prisma.resume.findUnique({ where: { id } });
+    if (!original) return null;
+
+    return prisma.resume.create({
+      data: {
+        userId,
+        title: `${original.title} (Salinan)`,
+        cvBase: original.cvBase,
+        jobDesc: original.jobDesc,
+        generatedCv: original.generatedCv,
+        status: "DRAFT",
+        matchScore: null,
+      },
+    });
+  },
 };

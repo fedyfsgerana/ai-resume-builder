@@ -3,6 +3,7 @@ import {
   generateResume,
   regenerateSection,
   getMatchScore,
+  analyzeKeywords,
 } from "../controllers/aiController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { validate, jobDescSchema } from "../utils/validator.js";
@@ -14,5 +15,6 @@ router.use(authMiddleware);
 router.post("/:id/generate", validate(jobDescSchema), generateResume);
 router.post("/:id/regenerate", regenerateSection);
 router.get("/:id/match-score", getMatchScore);
+router.get("/:id/analyze-keywords", analyzeKeywords);
 
 export default router;

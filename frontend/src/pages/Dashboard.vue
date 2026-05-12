@@ -97,6 +97,11 @@
                             <Pencil class="w-3.5 h-3.5" />
                             Edit
                         </RouterLink>
+                        <button @click="handleDuplicate(resume.id)"
+                            class="btn-secondary text-sm flex items-center gap-1.5 px-3 py-1.5">
+                            <Copy class="w-3.5 h-3.5" />
+                            Duplikat
+                        </button>
                         <button @click="handleExport(resume.id)"
                             class="btn-outline text-sm flex items-center gap-1.5 px-3 py-1.5" :disabled="loading">
                             <Download class="w-3.5 h-3.5" />
@@ -164,14 +169,14 @@ import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
     Plus, FileText, CheckCircle, Download, Search, FileX,
-    BarChart2, Clock, Pencil, Trash2, X
+    BarChart2, Clock, Pencil, Trash2, X, Copy
 } from 'lucide-vue-next'
 import { useResume } from '@/composables/useResume.js'
 import { useToast } from '@/composables/useToast.js'
 import { useConfirm } from '@/composables/useConfirm.js'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
-const { resumes, loading, totalResumes, fetchAll, create, remove, exportResume } = useResume()
+const { resumes, loading, totalResumes, fetchAll, create, remove, exportResume, duplicate } = useResume()
 const { success, error, info } = useToast()
 const { open } = useConfirm()
 
@@ -238,6 +243,25 @@ const handleCreate = async () => {
         success('CV berhasil dibuat')
     } catch {
         error('Gagal membuat CV, coba lagi')
+    }
+}
+
+const handleDuplicate = async (id) => {
+    const confirmed = await open({
+        title: 'Duplikat CV',
+        message: 'CV akan diduplikat sebagai salinan baru. Lanjutkan?',
+        confirmText: 'Duplikat',
+        cancelText: 'Batal',
+        type: 'info'
+    })
+
+    if (!confirmed) return
+
+    try {
+        await duplicate(id)
+        success('CV berhasil diduplikat')
+    } catch {
+        error('Gagal menduplikat CV, coba lagi')
     }
 }
 

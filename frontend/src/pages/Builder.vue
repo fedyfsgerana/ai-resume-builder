@@ -9,8 +9,7 @@
                 <div>
                     <h1 class="text-xl font-bold text-secondary-900">{{ currentResume?.title || 'Resume Builder' }}</h1>
                     <div class="flex items-center gap-2 mt-0.5">
-                        <span :class="statusBadge(currentResume?.status)">{{ statusLabel(currentResume?.status)
-                            }}</span>
+                        <span :class="statusBadge(currentResume?.status)">{{ currentResume?.status || 'DRAFT' }}</span>
                         <span v-if="currentResume?.matchScore"
                             class="flex items-center gap-1 text-xs text-secondary-500">
                             <BarChart2 class="w-3 h-3" />
@@ -21,6 +20,13 @@
             </div>
 
             <div class="flex items-center gap-2">
+                <Transition name="fade">
+                    <div v-if="autoSaveStatus" class="flex items-center gap-1.5 text-xs text-secondary-400">
+                        <LoadingSpinner v-if="autoSaveStatus === 'saving'" size="sm" />
+                        <CheckCircle v-else-if="autoSaveStatus === 'saved'" class="w-3.5 h-3.5 text-green-500" />
+                        <span>{{ autoSaveStatus === 'saving' ? 'Menyimpan...' : 'Tersimpan' }}</span>
+                    </div>
+                </Transition>
                 <UploadCV @parsed="handleParsed" />
                 <button @click="handleExport" :disabled="!currentResume?.generatedCv || loading"
                     class="flex items-center gap-2 text-sm btn-outline">
@@ -129,8 +135,7 @@
                                         <RefreshCw class="w-3 h-3" :class="{ 'animate-spin': generating }" />
                                         Buat Ulang
                                     </button>
-                                    <button @click="handleRemoveExperience(index)"
-                                        class="text-red-400 hover:text-red-600">
+                                    <button @click="removeExperience(index)" class="text-red-400 hover:text-red-600">
                                         <Trash2 class="w-4 h-4" />
                                     </button>
                                 </div>
@@ -196,7 +201,7 @@
                             class="flex flex-col gap-3 p-4 border rounded-xl border-secondary-100">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-medium text-secondary-700">Pendidikan {{ index + 1 }}</span>
-                                <button @click="handleRemoveEducation(index)" class="text-red-400 hover:text-red-600">
+                                <button @click="removeEducation(index)" class="text-red-400 hover:text-red-600">
                                     <Trash2 class="w-4 h-4" />
                                 </button>
                             </div>
@@ -408,12 +413,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import {
     ArrowLeft, BarChart2, Download, Save, User, AlignLeft,
     Briefcase, GraduationCap, Wrench, ClipboardList, Sparkles,
-    PlusCircle, Trash2, RefreshCw, X, Eye, Lightbulb
+    PlusCircle, Trash2, RefreshCw, X, Eye, Lightbulb, CheckCircle
 } from 'lucide-vue-next'
 import { useResume } from '@/composables/useResume.js'
 import { useToast } from '@/composables/useToast.js'
@@ -428,6 +433,8 @@ const { open } = useConfirm()
 
 const jobDesc = ref('')
 const skillInput = ref('')
+const autoSaveStatus = ref('')
+let autoSaveTimer = null
 
 const form = ref({
     personalInfo: { name: '', email: '', phone: '', address: '', linkedin: '', website: '' },
@@ -451,6 +458,12 @@ const statusBadge = (status) => ({
     GENERATED: 'badge badge-success',
     EXPORTED: 'badge badge-info'
 }[status] || 'badge')
+
+const statusLabel = (status) => ({
+    DRAFT: 'Draft',
+    GENERATED: 'Digenerate',
+    EXPORTED: 'Diekspor'
+}[status] || status)
 
 const addExperience = () => {
     form.value.experience.push({
@@ -515,6 +528,27 @@ const buildCvBase = () => {
                 ? exp.descriptionText.split('\n').filter(Boolean)
                 : exp.description
         }))
+    }
+}
+
+const startAutoSave = () => {
+    autoSaveTimer = setInterval(async () => {
+        if (!currentResume.value) return
+        try {
+            autoSaveStatus.value = 'saving'
+            await update(route.params.id, { cvBase: buildCvBase() })
+            autoSaveStatus.value = 'saved'
+            setTimeout(() => { autoSaveStatus.value = '' }, 2000)
+        } catch {
+            autoSaveStatus.value = ''
+        }
+    }, 30000)
+}
+
+const stopAutoSave = () => {
+    if (autoSaveTimer) {
+        clearInterval(autoSaveTimer)
+        autoSaveTimer = null
     }
 }
 
@@ -634,14 +668,25 @@ watch(currentResume, (val) => populateForm(val))
 onMounted(async () => {
     try {
         await fetchById(route.params.id)
+        startAutoSave()
     } catch {
         error('Gagal memuat CV, coba lagi')
     }
 })
 
-const statusLabel = (status) => ({
-    DRAFT: 'Draft',
-    GENERATED: 'Digenerate',
-    EXPORTED: 'Diekspor'
-}[status] || status)
+onUnmounted(() => {
+    stopAutoSave()
+})
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>
