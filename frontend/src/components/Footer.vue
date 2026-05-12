@@ -3,7 +3,7 @@
         <div class="container px-4 py-6 mx-auto max-w-7xl">
             <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
                 <div class="flex items-center gap-2">
-                    <img src="/logo.svg" alt="AI Resume Builder" class="w-6 h-6" />
+                    <img src="/logo.svg" alt="AI Resume Builder" class="rounded-lg h-7 w-7" />
                     <span class="text-lg font-bold text-primary-600">AI Resume Builder</span>
                     <span class="text-sm text-secondary-400">v{{ version }}</span>
                 </div>

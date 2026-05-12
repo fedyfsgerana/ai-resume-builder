@@ -3,7 +3,7 @@
         <div class="container px-4 mx-auto max-w-7xl">
             <div class="flex items-center justify-between h-16">
                 <RouterLink to="/" class="flex items-center gap-2">
-                    <img src="/logo.svg" alt="AI Resume Builder" class="h-9 w-9" />
+                    <img src="/logo.svg" alt="AI Resume Builder" class="h-9 w-9 rounded-xl" />
                     <span class="text-xl font-bold text-primary-600">AI Resume Builder</span>
                 </RouterLink>
 
