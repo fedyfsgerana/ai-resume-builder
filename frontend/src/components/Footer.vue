@@ -1,5 +1,5 @@
 <template>
-    <footer class="mt-auto bg-white border-t border-secondary-200">
+    <footer class="mt-auto bg-white border-t border-secondary-200 dark:bg-secondary-900 dark:border-secondary-700">
         <div class="container px-4 py-6 mx-auto max-w-7xl">
             <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
                 <div class="flex items-center gap-2">
@@ -8,23 +8,23 @@
                     <span class="text-sm text-secondary-400">v{{ version }}</span>
                 </div>
 
-                <p class="text-sm text-secondary-500">
+                <p class="text-sm text-secondary-500 dark:text-secondary-400">
                     &copy; {{ currentYear }} AI Resume Builder. All rights reserved.
                 </p>
 
                 <div class="flex items-center gap-6">
                     <a href="#"
-                        class="flex items-center gap-1.5 text-secondary-500 hover:text-primary-600 text-sm transition-colors">
+                        class="flex items-center gap-1.5 text-secondary-500 hover:text-primary-600 text-sm transition-colors dark:text-secondary-400">
                         <ShieldCheck class="w-4 h-4" />
                         Privacy Policy
                     </a>
                     <a href="#"
-                        class="flex items-center gap-1.5 text-secondary-500 hover:text-primary-600 text-sm transition-colors">
+                        class="flex items-center gap-1.5 text-secondary-500 hover:text-primary-600 text-sm transition-colors dark:text-secondary-400">
                         <ScrollText class="w-4 h-4" />
                         Terms of Service
                     </a>
                     <a href="#"
-                        class="flex items-center gap-1.5 text-secondary-500 hover:text-primary-600 text-sm transition-colors">
+                        class="flex items-center gap-1.5 text-secondary-500 hover:text-primary-600 text-sm transition-colors dark:text-secondary-400">
                         <Mail class="w-4 h-4" />
                         Contact
                     </a>
