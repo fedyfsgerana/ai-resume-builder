@@ -27,6 +27,12 @@
                         <span>{{ autoSaveStatus === 'saving' ? 'Menyimpan...' : 'Tersimpan' }}</span>
                     </div>
                 </Transition>
+                <RouterLink v-if="currentResume?.generatedCv"
+                    :to="{ name: 'KeywordAnalysis', params: { id: route.params.id } }"
+                    class="flex items-center gap-2 text-sm btn-secondary">
+                    <SearchCheck class="w-4 h-4" />
+                    Analisis Kata Kunci
+                </RouterLink>
                 <UploadCV @parsed="handleParsed" />
                 <button @click="handleExport" :disabled="!currentResume?.generatedCv || loading"
                     class="flex items-center gap-2 text-sm btn-outline">
@@ -328,7 +334,7 @@
                         <p class="mb-2 text-xs font-medium text-secondary-600">Kata Kunci yang Kurang</p>
                         <div class="flex flex-wrap gap-1.5">
                             <span v-for="kw in matchResult.missingKeywords" :key="kw" class="badge badge-danger">{{ kw
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
                     <div v-if="matchResult.suggestions?.length">
@@ -376,12 +382,12 @@
                             </p>
                             <div v-for="exp in previewData.experience" :key="exp.company" class="mb-2">
                                 <p class="text-xs font-semibold text-secondary-800">{{ exp.position }} — {{ exp.company
-                                    }}</p>
+                                }}</p>
                                 <p class="text-xs text-secondary-500">{{ exp.startDate }} - {{ exp.isCurrent ?
                                     'Sekarang' : exp.endDate }}</p>
                                 <ul v-if="exp.description?.length" class="mt-1">
                                     <li v-for="d in exp.description" :key="d" class="text-xs text-secondary-600">- {{ d
-                                        }}</li>
+                                    }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -418,7 +424,7 @@ import { useRoute, RouterLink } from 'vue-router'
 import {
     ArrowLeft, BarChart2, Download, Save, User, AlignLeft,
     Briefcase, GraduationCap, Wrench, ClipboardList, Sparkles,
-    PlusCircle, Trash2, RefreshCw, X, Eye, Lightbulb, CheckCircle
+    PlusCircle, Trash2, RefreshCw, X, Eye, Lightbulb, CheckCircle, SearchCheck
 } from 'lucide-vue-next'
 import { useResume } from '@/composables/useResume.js'
 import { useToast } from '@/composables/useToast.js'

@@ -34,6 +34,12 @@ const routes = [
         name: 'Profile',
         component: () => import('@/pages/Profile.vue'),
         meta: { requiresAuth: true }
+      },
+      {
+        path: 'keyword-analysis/:id',
+        name: 'KeywordAnalysis',
+        component: () => import('@/pages/KeywordAnalysis.vue'),
+        meta: { requiresAuth: true }
       }
     ]
   },
