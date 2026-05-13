@@ -3,8 +3,9 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-secondary-900">Dasbor</h1>
-                <p class="mt-1 text-sm text-secondary-500">Kelola semua CV kamu dalam satu tempat</p>
+                <h1 class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">Dasbor</h1>
+                <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-400">Kelola semua CV kamu dalam satu
+                    tempat</p>
             </div>
             <button @click="openCreateModal" class="flex items-center gap-2 btn-primary">
                 <Plus class="w-4 h-4" />
@@ -15,32 +16,32 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 gap-4 mb-8 md:grid-cols-3">
             <div class="flex items-center gap-4 card">
-                <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-100">
-                    <FileText class="w-5 h-5 text-primary-600" />
+                <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900">
+                    <FileText class="w-5 h-5 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-secondary-900">{{ totalResumes }}</p>
-                    <p class="text-sm text-secondary-500">Total CV</p>
+                    <p class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">{{ totalResumes }}</p>
+                    <p class="text-sm text-secondary-500 dark:text-secondary-400">Total CV</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-4 card">
-                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-xl">
-                    <CheckCircle class="w-5 h-5 text-green-600" />
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-xl dark:bg-green-900">
+                    <CheckCircle class="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-secondary-900">{{ generatedCount }}</p>
-                    <p class="text-sm text-secondary-500">Sudah Digenerate</p>
+                    <p class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">{{ generatedCount }}</p>
+                    <p class="text-sm text-secondary-500 dark:text-secondary-400">Sudah Digenerate</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-4 card">
-                <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-xl">
-                    <Download class="w-5 h-5 text-blue-600" />
+                <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-xl dark:bg-blue-900">
+                    <Download class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-secondary-900">{{ exportedCount }}</p>
-                    <p class="text-sm text-secondary-500">Sudah Diekspor</p>
+                    <p class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">{{ exportedCount }}</p>
+                    <p class="text-sm text-secondary-500 dark:text-secondary-400">Sudah Diekspor</p>
                 </div>
             </div>
         </div>
@@ -48,7 +49,7 @@
         <!-- Resume List -->
         <div class="card">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-lg font-semibold text-secondary-900">CV Kamu</h2>
+                <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">CV Kamu</h2>
                 <div class="relative">
                     <Search class="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-secondary-400" />
                     <input v-model="search" type="text" placeholder="Cari CV..." class="w-56 py-2 text-sm input pl-9" />
@@ -58,9 +59,10 @@
             <LoadingSpinner v-if="loading" text="Memuat CV..." />
 
             <div v-else-if="filteredResumes.length === 0" class="py-16 text-center">
-                <FileX class="w-12 h-12 mx-auto mb-4 text-secondary-300" />
-                <p class="font-medium text-secondary-500">Belum ada CV</p>
-                <p class="mt-1 text-sm text-secondary-400">Buat CV pertama kamu untuk memulai</p>
+                <FileX class="w-12 h-12 mx-auto mb-4 text-secondary-300 dark:text-secondary-600" />
+                <p class="font-medium text-secondary-500 dark:text-secondary-400">Belum ada CV</p>
+                <p class="mt-1 text-sm text-secondary-400 dark:text-secondary-500">Buat CV pertama kamu untuk memulai
+                </p>
                 <button @click="openCreateModal" class="flex items-center gap-2 mx-auto mt-4 btn-primary">
                     <Plus class="w-4 h-4" />
                     Buat CV Baru
@@ -69,21 +71,23 @@
 
             <div v-else class="flex flex-col gap-3">
                 <div v-for="resume in filteredResumes" :key="resume.id"
-                    class="flex items-center justify-between p-4 transition-all border rounded-xl border-secondary-100 hover:border-primary-200 hover:bg-primary-50">
+                    class="flex items-center justify-between p-4 transition-all border rounded-xl border-secondary-100 dark:border-secondary-700 hover:border-primary-200 dark:hover:border-primary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20">
                     <div class="flex items-center gap-4">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary-100">
-                            <FileText class="w-5 h-5 text-secondary-500" />
+                        <div
+                            class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary-100 dark:bg-secondary-700">
+                            <FileText class="w-5 h-5 text-secondary-500 dark:text-secondary-400" />
                         </div>
                         <div>
-                            <p class="font-medium text-secondary-900">{{ resume.title }}</p>
+                            <p class="font-medium text-secondary-900 dark:text-secondary-100">{{ resume.title }}</p>
                             <div class="flex items-center gap-3 mt-1">
                                 <span :class="statusBadge(resume.status)">{{ statusLabel(resume.status) }}</span>
                                 <span v-if="resume.matchScore"
-                                    class="flex items-center gap-1 text-xs text-secondary-500">
+                                    class="flex items-center gap-1 text-xs text-secondary-500 dark:text-secondary-400">
                                     <BarChart2 class="w-3 h-3" />
                                     {{ resume.matchScore }}% kecocokan
                                 </span>
-                                <span class="flex items-center gap-1 text-xs text-secondary-400">
+                                <span
+                                    class="flex items-center gap-1 text-xs text-secondary-400 dark:text-secondary-500">
                                     <Clock class="w-3 h-3" />
                                     {{ formatDate(resume.createdAt) }}
                                 </span>
@@ -121,18 +125,22 @@
             <div v-if="createModalOpen" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50"
                 @click.self="createModalOpen = false">
                 <Transition name="scale">
-                    <div v-if="createModalOpen" class="w-full max-w-md p-6 bg-white rounded-2xl shadow-modal">
+                    <div v-if="createModalOpen"
+                        class="w-full max-w-md p-6 bg-white dark:bg-secondary-800 rounded-2xl shadow-modal">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-lg font-semibold text-secondary-900">Buat CV Baru</h2>
+                            <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">Buat CV Baru
+                            </h2>
                             <button @click="createModalOpen = false"
-                                class="text-secondary-400 hover:text-secondary-600">
+                                class="text-secondary-400 hover:text-secondary-600 dark:hover:text-secondary-200">
                                 <X class="w-5 h-5" />
                             </button>
                         </div>
 
                         <div class="flex flex-col gap-4">
                             <div>
-                                <label class="block mb-1 text-sm font-medium text-secondary-700">Judul CV</label>
+                                <label
+                                    class="block mb-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">Judul
+                                    CV</label>
                                 <div class="relative">
                                     <FileText
                                         class="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-secondary-400" />
@@ -228,7 +236,6 @@ const handleCreate = async () => {
         error('Judul CV tidak boleh kosong')
         return
     }
-
     try {
         await create({
             title: newResumeTitle.value,
@@ -254,9 +261,7 @@ const handleDuplicate = async (id) => {
         cancelText: 'Batal',
         type: 'info'
     })
-
     if (!confirmed) return
-
     try {
         await duplicate(id)
         success('CV berhasil diduplikat')
@@ -273,9 +278,7 @@ const handleDelete = async (id) => {
         cancelText: 'Batal',
         type: 'danger'
     })
-
     if (!confirmed) return
-
     try {
         await remove(id)
         success('CV berhasil dihapus')
@@ -292,9 +295,7 @@ const handleExport = async (id) => {
         cancelText: 'Batal',
         type: 'info'
     })
-
     if (!confirmed) return
-
     try {
         info('Sedang mengekspor CV...')
         await exportResume(id)

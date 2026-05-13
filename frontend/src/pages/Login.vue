@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-secondary-900">Selamat Datang</h1>
-            <p class="mt-1 text-sm text-secondary-500">Masuk ke akun kamu untuk melanjutkan</p>
+            <h1 class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">Selamat Datang</h1>
+            <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-400">Masuk ke akun kamu untuk melanjutkan</p>
         </div>
 
         <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
             <div>
-                <label class="block mb-1 text-sm font-medium text-secondary-700">Email</label>
+                <label class="block mb-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">Email</label>
                 <div class="relative">
                     <Mail class="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-secondary-400" />
                     <input v-model="form.email" type="email" placeholder="Masukkan email" class="pl-10 input"
@@ -16,13 +16,14 @@
             </div>
 
             <div>
-                <label class="block mb-1 text-sm font-medium text-secondary-700">Kata Sandi</label>
+                <label class="block mb-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">Kata
+                    Sandi</label>
                 <div class="relative">
                     <Lock class="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-secondary-400" />
                     <input v-model="form.password" :type="showPassword ? 'text' : 'password'"
                         placeholder="Masukkan kata sandi" class="pl-10 pr-10 input" required />
                     <button type="button" @click="showPassword = !showPassword"
-                        class="absolute -translate-y-1/2 right-3 top-1/2 text-secondary-400 hover:text-secondary-600">
+                        class="absolute -translate-y-1/2 right-3 top-1/2 text-secondary-400 hover:text-secondary-600 dark:hover:text-secondary-200">
                         <Eye v-if="!showPassword" class="w-4 h-4" />
                         <EyeOff v-else class="w-4 h-4" />
                     </button>
@@ -39,7 +40,7 @@
             </button>
         </form>
 
-        <p class="mt-6 text-sm text-center text-secondary-500">
+        <p class="mt-6 text-sm text-center text-secondary-500 dark:text-secondary-400">
             Belum punya akun?
             <RouterLink to="/auth/register" class="font-medium text-primary-600 hover:underline">
                 Daftar Sekarang
@@ -59,11 +60,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const { login, loading } = useAuth()
 const { success, error } = useToast()
 
-const form = ref({
-    email: '',
-    password: ''
-})
-
+const form = ref({ email: '', password: '' })
 const showPassword = ref(false)
 
 const handleLogin = async () => {
