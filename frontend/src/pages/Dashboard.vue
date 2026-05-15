@@ -3,11 +3,13 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">Dasbor</h1>
-                <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-400">Kelola semua CV kamu dalam satu
-                    tempat</p>
+                <h1 class="text-3xl font-extrabold tracking-tight text-secondary-900 dark:text-white">Dasbor</h1>
+                <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-400">
+                    Selamat datang kembali, <span class="font-semibold text-primary-600">{{ userName }}</span>
+                </p>
             </div>
-            <button @click="openCreateModal" class="flex items-center gap-2 btn-primary">
+            <button @click="openCreateModal"
+                class="btn-primary flex items-center gap-2 px-5 py-2.5 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all">
                 <Plus class="w-4 h-4" />
                 Buat CV Baru
             </button>
@@ -15,41 +17,50 @@
 
         <!-- Stats -->
         <div class="grid grid-cols-1 gap-4 mb-8 md:grid-cols-3">
-            <div class="flex items-center gap-4 card">
-                <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900">
-                    <FileText class="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            <div
+                class="card flex items-center gap-4 group hover:-translate-y-0.5 hover:shadow-lg transition-all border border-secondary-100 dark:border-secondary-700">
+                <div
+                    class="flex items-center justify-center w-12 h-12 transition-transform rounded-2xl bg-primary-100 dark:bg-primary-900 shrink-0 group-hover:scale-110">
+                    <FileText class="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">{{ totalResumes }}</p>
+                    <p class="text-3xl font-extrabold tracking-tight text-secondary-900 dark:text-white">{{ totalResumes
+                        }}</p>
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">Total CV</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 card">
-                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-xl dark:bg-green-900">
-                    <CheckCircle class="w-5 h-5 text-green-600 dark:text-green-400" />
+            <div
+                class="card flex items-center gap-4 group hover:-translate-y-0.5 hover:shadow-lg transition-all border border-secondary-100 dark:border-secondary-700">
+                <div
+                    class="flex items-center justify-center w-12 h-12 transition-transform bg-green-100 rounded-2xl dark:bg-green-900 shrink-0 group-hover:scale-110">
+                    <Sparkles class="w-6 h-6 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">{{ generatedCount }}</p>
+                    <p class="text-3xl font-extrabold tracking-tight text-secondary-900 dark:text-white">{{
+                        generatedCount }}</p>
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">Sudah Digenerate</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 card">
-                <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-xl dark:bg-blue-900">
-                    <Download class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div
+                class="card flex items-center gap-4 group hover:-translate-y-0.5 hover:shadow-lg transition-all border border-secondary-100 dark:border-secondary-700">
+                <div
+                    class="flex items-center justify-center w-12 h-12 transition-transform bg-blue-100 rounded-2xl dark:bg-blue-900 shrink-0 group-hover:scale-110">
+                    <FileDown class="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-secondary-900 dark:text-secondary-100">{{ exportedCount }}</p>
+                    <p class="text-3xl font-extrabold tracking-tight text-secondary-900 dark:text-white">{{
+                        exportedCount }}</p>
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">Sudah Diekspor</p>
                 </div>
             </div>
         </div>
 
         <!-- Resume List -->
-        <div class="card">
+        <div class="border card border-secondary-100 dark:border-secondary-700">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">CV Kamu</h2>
+                <h2 class="text-lg font-bold text-secondary-900 dark:text-white">CV Kamu</h2>
                 <div class="relative">
                     <Search class="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-secondary-400" />
                     <input v-model="search" type="text" placeholder="Cari CV..." class="w-56 py-2 text-sm input pl-9" />
@@ -58,12 +69,16 @@
 
             <LoadingSpinner v-if="loading" text="Memuat CV..." />
 
-            <div v-else-if="filteredResumes.length === 0" class="py-16 text-center">
-                <FileX class="w-12 h-12 mx-auto mb-4 text-secondary-300 dark:text-secondary-600" />
-                <p class="font-medium text-secondary-500 dark:text-secondary-400">Belum ada CV</p>
-                <p class="mt-1 text-sm text-secondary-400 dark:text-secondary-500">Buat CV pertama kamu untuk memulai
+            <div v-else-if="filteredResumes.length === 0" class="py-20 text-center">
+                <div
+                    class="flex items-center justify-center w-20 h-20 mx-auto mb-4 rounded-3xl bg-secondary-100 dark:bg-secondary-700">
+                    <FileX class="w-10 h-10 text-secondary-400 dark:text-secondary-500" />
+                </div>
+                <p class="mb-1 text-lg font-bold text-secondary-700 dark:text-secondary-300">Belum ada CV</p>
+                <p class="mb-6 text-sm text-secondary-400 dark:text-secondary-500">Buat CV pertama kamu untuk memulai
                 </p>
-                <button @click="openCreateModal" class="flex items-center gap-2 mx-auto mt-4 btn-primary">
+                <button @click="openCreateModal"
+                    class="flex items-center gap-2 mx-auto shadow-lg btn-primary shadow-primary-500/25">
                     <Plus class="w-4 h-4" />
                     Buat CV Baru
                 </button>
@@ -71,31 +86,31 @@
 
             <div v-else class="flex flex-col gap-3">
                 <div v-for="resume in filteredResumes" :key="resume.id"
-                    class="flex items-center justify-between p-4 transition-all border rounded-xl border-secondary-100 dark:border-secondary-700 hover:border-primary-200 dark:hover:border-primary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20">
+                    class="flex items-center justify-between p-4 transition-all border group rounded-2xl border-secondary-100 dark:border-secondary-700 hover:border-primary-300 dark:hover:border-primary-600 hover:bg-primary-50/50 dark:hover:bg-primary-900/10">
                     <div class="flex items-center gap-4">
                         <div
-                            class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary-100 dark:bg-secondary-700">
-                            <FileText class="w-5 h-5 text-secondary-500 dark:text-secondary-400" />
+                            class="flex items-center justify-center w-12 h-12 transition-transform rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 shrink-0 group-hover:scale-105">
+                            <FileText class="w-6 h-6 text-primary-600 dark:text-primary-400" />
                         </div>
                         <div>
-                            <p class="font-medium text-secondary-900 dark:text-secondary-100">{{ resume.title }}</p>
-                            <div class="flex items-center gap-3 mt-1">
+                            <p class="font-bold text-secondary-900 dark:text-white">{{ resume.title }}</p>
+                            <div class="flex flex-wrap items-center gap-3 mt-1">
                                 <span :class="statusBadge(resume.status)">{{ statusLabel(resume.status) }}</span>
                                 <span v-if="resume.matchScore"
-                                    class="flex items-center gap-1 text-xs text-secondary-500 dark:text-secondary-400">
-                                    <BarChart2 class="w-3 h-3" />
+                                    class="flex items-center gap-1 text-xs font-medium text-secondary-500 dark:text-secondary-400">
+                                    <TrendingUp class="w-3 h-3 text-green-500" />
                                     {{ resume.matchScore }}% kecocokan
                                 </span>
                                 <span
                                     class="flex items-center gap-1 text-xs text-secondary-400 dark:text-secondary-500">
-                                    <Clock class="w-3 h-3" />
+                                    <CalendarDays class="w-3 h-3" />
                                     {{ formatDate(resume.createdAt) }}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 transition-opacity opacity-0 group-hover:opacity-100">
                         <RouterLink :to="{ name: 'Builder', params: { id: resume.id } }"
                             class="btn-secondary text-sm flex items-center gap-1.5 px-3 py-1.5">
                             <Pencil class="w-3.5 h-3.5" />
@@ -108,11 +123,22 @@
                         </button>
                         <button @click="handleExport(resume.id)"
                             class="btn-outline text-sm flex items-center gap-1.5 px-3 py-1.5" :disabled="loading">
-                            <Download class="w-3.5 h-3.5" />
+                            <FileDown class="w-3.5 h-3.5" />
                             Ekspor
                         </button>
                         <button @click="handleDelete(resume.id)"
                             class="btn-danger text-sm flex items-center gap-1.5 px-3 py-1.5">
+                            <Trash2 class="w-3.5 h-3.5" />
+                        </button>
+                    </div>
+
+                    <!-- Always visible on mobile -->
+                    <div class="flex items-center gap-2 md:hidden">
+                        <RouterLink :to="{ name: 'Builder', params: { id: resume.id } }"
+                            class="btn-secondary text-sm px-3 py-1.5">
+                            <Pencil class="w-3.5 h-3.5" />
+                        </RouterLink>
+                        <button @click="handleDelete(resume.id)" class="btn-danger text-sm px-3 py-1.5">
                             <Trash2 class="w-3.5 h-3.5" />
                         </button>
                     </div>
@@ -122,31 +148,35 @@
 
         <!-- Create Modal -->
         <Transition name="fade">
-            <div v-if="createModalOpen" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50"
+            <div v-if="createModalOpen"
+                class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm"
                 @click.self="createModalOpen = false">
                 <Transition name="scale">
                     <div v-if="createModalOpen"
-                        class="w-full max-w-md p-6 bg-white dark:bg-secondary-800 rounded-2xl shadow-modal">
+                        class="w-full max-w-md p-8 bg-white shadow-2xl dark:bg-secondary-800 rounded-3xl">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">Buat CV Baru
-                            </h2>
+                            <div>
+                                <h2 class="text-xl font-bold text-secondary-900 dark:text-white">Buat CV Baru</h2>
+                                <p class="text-secondary-500 dark:text-secondary-400 text-sm mt-0.5">Beri judul yang
+                                    mudah diingat</p>
+                            </div>
                             <button @click="createModalOpen = false"
-                                class="text-secondary-400 hover:text-secondary-600 dark:hover:text-secondary-200">
-                                <X class="w-5 h-5" />
+                                class="flex items-center justify-center w-8 h-8 transition-colors rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300">
+                                <X class="w-4 h-4" />
                             </button>
                         </div>
 
                         <div class="flex flex-col gap-4">
                             <div>
                                 <label
-                                    class="block mb-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">Judul
+                                    class="block mb-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300">Judul
                                     CV</label>
                                 <div class="relative">
                                     <FileText
                                         class="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-secondary-400" />
                                     <input v-model="newResumeTitle" type="text"
                                         placeholder="Contoh: CV - Gojek - Mei 2026" class="pl-10 input"
-                                        @keydown.enter="handleCreate" />
+                                        @keydown.enter="handleCreate" autofocus />
                                 </div>
                             </div>
 
@@ -155,7 +185,7 @@
                                     Batal
                                 </button>
                                 <button @click="handleCreate"
-                                    class="flex items-center justify-center flex-1 gap-2 btn-primary"
+                                    class="flex items-center justify-center flex-1 gap-2 shadow-lg btn-primary shadow-primary-500/25"
                                     :disabled="loading || !newResumeTitle.trim()">
                                     <LoadingSpinner v-if="loading" size="sm" />
                                     <span v-else class="flex items-center gap-2">
@@ -176,17 +206,23 @@
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
-    Plus, FileText, CheckCircle, Download, Search, FileX,
-    BarChart2, Clock, Pencil, Trash2, X, Copy
+    Plus, FileText, Search, FileX, Pencil, Trash2,
+    X, Copy, FileDown, Sparkles, TrendingUp, CalendarDays
 } from 'lucide-vue-next'
 import { useResume } from '@/composables/useResume.js'
 import { useToast } from '@/composables/useToast.js'
 import { useConfirm } from '@/composables/useConfirm.js'
+import { useAuthStore } from '@/stores/authStore.js'
+import { storeToRefs } from 'pinia'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const { resumes, loading, totalResumes, fetchAll, create, remove, exportResume, duplicate } = useResume()
 const { success, error, info } = useToast()
 const { open } = useConfirm()
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
+
+const userName = computed(() => user.value?.name?.split(' ')[0] || 'Pengguna')
 
 const search = ref('')
 const createModalOpen = ref(false)
@@ -220,9 +256,7 @@ const statusLabel = (status) => ({
 
 const formatDate = (date) => {
     return new Date(date).toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
+        day: 'numeric', month: 'short', year: 'numeric'
     })
 }
 
@@ -239,12 +273,7 @@ const handleCreate = async () => {
     try {
         await create({
             title: newResumeTitle.value,
-            cvBase: {
-                personalInfo: { name: '', email: '' },
-                experience: [],
-                education: [],
-                skills: []
-            }
+            cvBase: { personalInfo: { name: '', email: '' }, experience: [], education: [], skills: [] }
         })
         createModalOpen.value = false
         success('CV berhasil dibuat')
@@ -257,9 +286,7 @@ const handleDuplicate = async (id) => {
     const confirmed = await open({
         title: 'Duplikat CV',
         message: 'CV akan diduplikat sebagai salinan baru. Lanjutkan?',
-        confirmText: 'Duplikat',
-        cancelText: 'Batal',
-        type: 'info'
+        confirmText: 'Duplikat', cancelText: 'Batal', type: 'info'
     })
     if (!confirmed) return
     try {
@@ -274,9 +301,7 @@ const handleDelete = async (id) => {
     const confirmed = await open({
         title: 'Hapus CV',
         message: 'Apakah kamu yakin ingin menghapus CV ini? Tindakan ini tidak dapat dibatalkan.',
-        confirmText: 'Hapus',
-        cancelText: 'Batal',
-        type: 'danger'
+        confirmText: 'Hapus', cancelText: 'Batal', type: 'danger'
     })
     if (!confirmed) return
     try {
@@ -291,9 +316,7 @@ const handleExport = async (id) => {
     const confirmed = await open({
         title: 'Ekspor PDF',
         message: 'CV akan diekspor ke format PDF. Lanjutkan?',
-        confirmText: 'Ekspor',
-        cancelText: 'Batal',
-        type: 'info'
+        confirmText: 'Ekspor', cancelText: 'Batal', type: 'info'
     })
     if (!confirmed) return
     try {
@@ -323,12 +346,12 @@ onMounted(async () => {
 
 .scale-enter-active,
 .scale-leave-active {
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .scale-enter-from,
 .scale-leave-to {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.9);
 }
 </style>
