@@ -6,9 +6,11 @@
                 <!-- Logo & tagline -->
                 <div class="flex flex-col items-center md:items-start gap-1.5">
                     <RouterLink to="/" class="flex items-center gap-2.5 group">
-                        <img src="/logo.svg" alt="AI Resume Builder"
-                            class="w-8 h-8 transition-transform rounded-lg group-hover:scale-105" />
-                        <span class="text-base font-extrabold tracking-tight text-secondary-900 dark:text-white">
+                        <div
+                            class="flex items-center justify-center transition-transform shadow-md w-9 h-9 rounded-xl bg-primary-600 group-hover:scale-105 shadow-primary-500/25">
+                            <span class="text-sm font-extrabold text-white">AI</span>
+                        </div>
+                        <span class="text-lg font-extrabold tracking-tight text-secondary-900 dark:text-white">
                             AI <span class="text-primary-600">Resume</span> Builder
                         </span>
                     </RouterLink>
