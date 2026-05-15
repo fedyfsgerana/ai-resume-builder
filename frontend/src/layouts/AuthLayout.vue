@@ -1,7 +1,5 @@
 <template>
     <div class="flex min-h-screen dark:bg-secondary-900">
-
-        <!-- Left Panel - Branding -->
         <div
             class="relative flex-col justify-between hidden w-1/2 p-12 overflow-hidden lg:flex bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900">
             <div class="absolute inset-0 overflow-hidden">
@@ -58,7 +56,6 @@
             </div>
         </div>
 
-        <!-- Right Panel -->
         <div class="flex flex-col items-center justify-center flex-1 px-6 py-12 bg-secondary-50 dark:bg-secondary-900">
             <RouterLink to="/" class="flex items-center gap-2 mb-8 lg:hidden">
                 <div class="flex items-center justify-center w-9 h-9 rounded-xl bg-primary-600">

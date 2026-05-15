@@ -1,8 +1,7 @@
 <template>
-    <footer class="mt-auto bg-white border-t dark:bg-secondary-900 border-secondary-100 dark:border-secondary-800">
-        <div class="container px-4 py-8 mx-auto max-w-7xl">
+    <footer class="bg-white border-t dark:bg-secondary-900 border-secondary-100 dark:border-secondary-800">
+        <div class="container px-6 py-8 mx-auto max-w-7xl">
             <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-
                 <div class="flex flex-col items-center md:items-start gap-1.5">
                     <RouterLink to="/" class="flex items-center gap-2.5 group">
                         <div
@@ -13,9 +12,8 @@
                             AI <span class="text-primary-600">Resume</span> Builder
                         </span>
                     </RouterLink>
-                    <p class="text-xs text-secondary-400 dark:text-secondary-500">
-                        Buat CV lebih cerdas dengan kekuatan AI
-                    </p>
+                    <p class="text-xs text-secondary-400 dark:text-secondary-500">Buat CV lebih cerdas dengan kekuatan
+                        AI</p>
                 </div>
 
                 <p class="order-last text-sm text-secondary-400 dark:text-secondary-500 md:order-none">
